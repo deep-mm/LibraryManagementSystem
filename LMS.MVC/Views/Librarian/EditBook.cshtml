@@ -1,0 +1,59 @@
+﻿
+@model LMS.SharedFiles.DTOs.BookFormDTO
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h2>Edit</h2>
+<h4>Book: @Model.bookDTO.title</h4>
+<hr />
+
+
+@if(@Model.bookDTO.imageUrl!=null){
+<img src=@Model.bookDTO.imageUrl alt="Image" height="150" width="100" />
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.bookDTO.bookId" />
+            <div class="form-group">
+                <label asp-for="@Model.bookDTO.title">Title</label>
+                <input asp-for="@Model.bookDTO.title" class="form-control" />
+                <span asp-validation-for="@Model.bookDTO.title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.bookDTO.author">Author</label>
+                <input asp-for="@Model.bookDTO.author" class="form-control" />
+                <span asp-validation-for="@Model.bookDTO.author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.bookDTO.price">Price</label>
+                <input asp-for="@Model.bookDTO.price" class="form-control" />
+                <span asp-validation-for="@Model.bookDTO.price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.bookDTO.genre">Genre</label>
+                <select asp-for="@Model.bookDTO.genre" class="form-control" asp-items="@Html.GetEnumSelectList<LMS.SharedFiles.DTOs.GenreTypes>()"></select>
+                <span asp-validation-for="@Model.bookDTO.genre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Update Book Image</label>
+                <input asp-for="@Model.bookImage" type="file" class="form-control" accept="image/*" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

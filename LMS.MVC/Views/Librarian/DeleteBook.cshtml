@@ -1,0 +1,42 @@
+﻿
+@model LMS.SharedFiles.DTOs.BookDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete Book: @Model.title</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Title
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+        <dt>
+            Author
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.author)
+        </dd>
+        <dt>
+            Price
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+        <dt>
+            Genre
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.genre)
+        </dd>
+    </dl>
+        <a asp-action="DeleteConfirmed" asp-route-id="@Model.bookId" class="btn btn-danger">Submit</a> |
+        <a asp-action="Index">Back to List</a>
+</div>

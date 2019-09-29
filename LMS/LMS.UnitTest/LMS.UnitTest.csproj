@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LM.BusinessLogic\LMS.BusinessLogic.csproj" />
+    <ProjectReference Include="..\..\LM.DataAccessLayer\LMS.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\..\LMS.APILayer\LMS.APILayer.csproj" />
+    <ProjectReference Include="..\..\LMS.Functions\LMS.Functions.csproj" />
+    <ProjectReference Include="..\..\LMS.MVC\LMS.MVC.csproj" />
+  </ItemGroup>
+
+</Project>

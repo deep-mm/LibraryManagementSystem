@@ -1,0 +1,43 @@
+﻿
+@model IEnumerable<LMS.SharedFiles.DTOs.BookOrdersDTO>
+@{
+    ViewData["Title"] = "History";
+}
+
+<h2>History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Book Name
+            </th>
+            <th>
+                Library ID
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.BookName
+                </td>
+                <td>
+                    @item.LibraryId
+                </td>
+                <td>
+                    @item.DueDate
+                </td>
+                <td>
+                    <a asp-action="Return" asp-route-id="@item.userBookAssociationId">Return Book</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.BusinessLogic.deps.json
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.BusinessLogic.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.BusinessLogic.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.DataAccessLayer.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.SharedFiles.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.DataAccessLayer.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\LMS.SharedFiles.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Http.Features.xml
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.csprojAssemblyReference.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.AssemblyInfo.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.csproj.CopyComplete
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Debug\netstandard2.0\LMS.BusinessLogic.pdb

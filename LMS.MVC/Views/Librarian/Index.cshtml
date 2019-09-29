@@ -1,0 +1,53 @@
+﻿@model IEnumerable<LMS.SharedFiles.DTOs.BookDTO>
+
+@{
+    ViewData["Title"] = "Library Books";
+}
+
+<h2>Library Books</h2>
+
+<a asp-action="CreateBook" class="glyphicon glyphicon-plus">     Create-New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Genre
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="BookDetails" asp-route-id="@item.bookId">@Html.DisplayFor(modelItem => item.title)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.author)
+                </td>
+                <td>
+                    Rs @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.genre)
+                </td>
+                <td>
+                    <a asp-action="EditBook" asp-route-id="@item.bookId" class="glyphicon glyphicon-pencil">    </a>
+
+                    <a asp-action="DeleteBook" asp-route-id="@item.bookId" class="glyphicon glyphicon-trash">   </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

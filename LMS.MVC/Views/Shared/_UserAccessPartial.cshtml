@@ -1,0 +1,17 @@
+﻿@using System.Security.Principal
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
+    {
+        <li><a asp-area="AzureAD" asp-controller="Student" asp-action="History">Order History</a></li>
+    }
+    else if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Librarian"))
+    {
+
+    }
+    else
+    {
+
+    }
+}

@@ -1,0 +1,12 @@
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.deps.json
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Http.Features.xml
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csprojAssemblyReference.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csproj.CoreCompileInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfoInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfo.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csproj.CopyComplete
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.pdb
