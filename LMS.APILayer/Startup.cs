@@ -62,7 +62,7 @@ namespace LMS.APILayer
 
             services.AddDbContextPool<ReadDBContext>(options =>
             {
-                options.UseSqlServer(Configuration["ConnectionString"]);
+                options.UseSqlServer(Configuration["ConnectionString"], b => b.MigrationsAssembly("LMS.APILayer"));
             });
 
             services.AddMvc();

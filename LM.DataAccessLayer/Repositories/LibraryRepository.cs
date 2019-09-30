@@ -21,6 +21,7 @@ namespace LMS.DataAccessLayer.Repositories
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
+        private string className = "LibraryRepository";
 
         public LibraryRepository(ReadDBContext readDBContext, IMapper mapper)
         {
@@ -33,22 +34,41 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<bool> CheckoutBook(int bookId, int userId)
         {
-            //Getting BookLibraryAssociation data object with the same bookId
-            var bookLibraryAssociation = (from bla in readDBContext.bookLibraryAssociations
-                                          where bla.bookId == bookId
-                                          select bla).FirstOrDefault();
-            //Change book status since book has been checked out
-            bookLibraryAssociation.isAvailable = false;
-            bookLibraryAssociation.isCheckedOut = true;
+            if (bookId == 0)
+            {
+                throw new ArgumentNullException(className + "/CheckoutBook(): The bookId parameter received is null");
+            }
+            else if (userId == 0)
+            {
+                throw new ArgumentNullException(className + "/CheckoutBook(): The userId parameter received is null");
+            }
+            else
+            {
+                //Getting BookLibraryAssociation data object with the same bookId
+                var bookLibraryAssociation = (from bla in readDBContext.bookLibraryAssociations
+                                              where bla.bookId == bookId
+                                              select bla).FirstOrDefault();
 
-            //Make a new entry in UserBookAssociation Table in the database
-            UserBookAssociation userBookAssociation = new UserBookAssociation();
-            userBookAssociation.BookLibraryAssociationId = bookLibraryAssociation.bookLibraryAssociationId;
-            userBookAssociation.userId = userId;
-            userBookAssociation.DueDate = DateTime.Now.AddDays(90);
-            await readDBContext.userBookAssociations.AddAsync(userBookAssociation);
-            await Commit();
-            return true;
+                if (bookLibraryAssociation != null)
+                {
+                    //Change book status since book has been checked out
+                    bookLibraryAssociation.isAvailable = false;
+                    bookLibraryAssociation.isCheckedOut = true;
+
+                    //Make a new entry in UserBookAssociation Table in the database
+                    UserBookAssociation userBookAssociation = new UserBookAssociation();
+                    userBookAssociation.BookLibraryAssociationId = bookLibraryAssociation.bookLibraryAssociationId;
+                    userBookAssociation.userId = userId;
+                    userBookAssociation.DueDate = DateTime.Now.AddDays(90);
+                    await readDBContext.userBookAssociations.AddAsync(userBookAssociation);
+                    await Commit();
+                    return true;
+                }
+                else
+                {
+                    throw new NullReferenceException(className + $"/CheckoutBook():The bookLibraryAssociation for bookId: {bookId} was not found");
+                }
+            }
         }
 
         /*
@@ -61,7 +81,14 @@ namespace LMS.DataAccessLayer.Repositories
                                       where bla.isAvailable == true
                                       select book;
 
-            return mapper.Map<IEnumerable<BookDTO>>(books);
+            if (books != null)
+            {
+                return mapper.Map<IEnumerable<BookDTO>>(books);
+            }
+            else
+            {
+                throw new NullReferenceException(className+ "/GetAllAvailaibleBooks(): The books array returned from database is null");
+            }
         }
 
         /*
@@ -72,7 +99,14 @@ namespace LMS.DataAccessLayer.Repositories
             IEnumerable<Library> libraries = from library in readDBContext.libraries
                                              select library;
 
-            return mapper.Map<IEnumerable<LibraryDTO>>(libraries);
+            if (libraries != null)
+            {
+                return mapper.Map<IEnumerable<LibraryDTO>>(libraries);
+            }
+            else
+            {
+                throw new NullReferenceException(className+ "/GetAllLibraries() The library array returned from database is null");
+            }
         }
 
         /*
@@ -84,7 +118,15 @@ namespace LMS.DataAccessLayer.Repositories
                                              where library.locationId == locationId
                                              select library;
 
-            return mapper.Map<IEnumerable<LibraryDTO>>(libraries);
+            if (libraries != null)
+            {
+                return mapper.Map<IEnumerable<LibraryDTO>>(libraries);
+            }
+            else
+            {
+                throw new NullReferenceException(className+ $"/GetLibrariesByLocation(): The library array returned from database for locationId: {locationId} was not found");
+            }
+
         }
 
         /*
@@ -92,29 +134,70 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<LibraryDTO> GetLibraryById(int librarayId)
         {
-            Library library = await readDBContext.libraries.FindAsync(librarayId);
-            return mapper.Map<LibraryDTO>(library);
+            if (librarayId != 0)
+            {
+                Library library = await readDBContext.libraries.FindAsync(librarayId);
+                if (library != null)
+                {
+                    return mapper.Map<LibraryDTO>(library);
+                }
+                else
+                {
+                    throw new NullReferenceException(className + $"/GetLibraryById(): The library object for libraryId:{librarayId} was not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(className + "/GetLibraryById(): The libraryId parameter received is null");
+            }
         }
 
         /*
-         * User returns a checked out book back to the library: await ReturnBook(bookId
+         * User returns a checked out book back to the library: await ReturnBook(bookId,userId)
          */
         public async Task<bool> ReturnBook(int bookId, int userId)
         {
-            //Getting BookLibraryAssociation data object with the same bookId
-            var bookLibraryAssociation = (from bla in readDBContext.bookLibraryAssociations
-                                          join uba in readDBContext.userBookAssociations on bla.bookLibraryAssociationId equals uba.BookLibraryAssociationId
-                                          where uba.userId == userId && bla.bookId==bookId
-                                          select bla).SingleOrDefault();
-            //Change book status since book has been checked out
-            bookLibraryAssociation.isAvailable = true;
-            bookLibraryAssociation.isCheckedOut = false;
+            if (bookId == 0)
+            {
+                throw new ArgumentNullException(className + "/ReturnBook(): The bookId parameter received is null");
+            }
+            else if (userId == 0)
+            {
+                throw new ArgumentNullException(className + "/ReturnBook(): The libraryId parameter received is null");
+            }
+            else
+            {
+                //Getting BookLibraryAssociation data object with the same bookId
+                var bookLibraryAssociation = (from bla in readDBContext.bookLibraryAssociations
+                                              join uba in readDBContext.userBookAssociations on bla.bookLibraryAssociationId equals uba.BookLibraryAssociationId
+                                              where uba.userId == userId && bla.bookId == bookId
+                                              select bla).SingleOrDefault();
 
-            UserBookAssociation userBookAssociation = readDBContext.userBookAssociations.Where
-                (u => u.BookLibraryAssociationId == bookLibraryAssociation.bookLibraryAssociationId).SingleOrDefault();
-            readDBContext.userBookAssociations.Remove(userBookAssociation);
-            await Commit();
-            return true;
+                if (bookLibraryAssociation != null)
+                {
+                    //Change book status since book has been checked out
+                    bookLibraryAssociation.isAvailable = true;
+                    bookLibraryAssociation.isCheckedOut = false;
+
+                    UserBookAssociation userBookAssociation = readDBContext.userBookAssociations.Where
+                        (u => u.BookLibraryAssociationId == bookLibraryAssociation.bookLibraryAssociationId).SingleOrDefault();
+
+                    if (userBookAssociation != null)
+                    {
+                        readDBContext.userBookAssociations.Remove(userBookAssociation);
+                        await Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        throw new NullReferenceException(className + $"/ReturnBook(): The userBookAssociation for bookLibraryAssociationId:{bookLibraryAssociation.bookLibraryAssociationId} was not found");
+                    }
+                }
+                else
+                {
+                    throw new NullReferenceException(className + $"/ReturnBook(): The bookLibraryAssociation for bookId:{bookId} was not found");
+                }
+            }
         }
 
         /*
@@ -124,7 +207,15 @@ namespace LMS.DataAccessLayer.Repositories
         {
             IEnumerable<Location> locations = from location in readDBContext.locations
                                               select location;
-            return mapper.Map<IEnumerable<LocationDTO>>(locations);
+
+            if (locations != null)
+            {
+                return mapper.Map<IEnumerable<LocationDTO>>(locations);
+            }
+            else
+            {
+                throw new NullReferenceException(className + "/GetAllLocations(): The locations array received from database is null");
+            }
         }
 
         /*
@@ -132,7 +223,14 @@ namespace LMS.DataAccessLayer.Repositories
         */
         public async Task Commit()
         {
-            await readDBContext.SaveChangesAsync();
+            try
+            {
+                await readDBContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(className + "/Commit(): Error occured while commiting to database");
+            }
         }
 
     }

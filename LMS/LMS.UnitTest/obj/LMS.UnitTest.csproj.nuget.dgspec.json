@@ -338,6 +338,10 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "Microsoft.ApplicationInsights": {
+              "target": "Package",
+              "version": "[2.11.0, )"
+            },
             "Microsoft.ApplicationInsights.AspNetCore": {
               "target": "Package",
               "version": "[2.7.0, )"
@@ -420,6 +424,10 @@
       "frameworks": {
         "netstandard2.0": {
           "dependencies": {
+            "Microsoft.ApplicationInsights": {
+              "target": "Package",
+              "version": "[2.11.0, )"
+            },
             "Microsoft.Azure.KeyVault": {
               "target": "Package",
               "version": "[3.0.4, )"
@@ -496,6 +504,14 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "AutoMoq": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "EntityFrameworkTesting.Moq": {
+              "target": "Package",
+              "version": "[1.2.3, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.3.0, )"
@@ -504,6 +520,14 @@
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.13.0, )"
+            },
+            "Moq.AutoMock": {
+              "target": "Package",
+              "version": "[1.2.0.122-pre, )"
             },
             "xunit": {
               "target": "Package",

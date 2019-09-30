@@ -14,49 +14,65 @@ namespace LMS.MVC.Controllers
     using LMS.SharedFiles.DTOs;
     using Microsoft.AspNetCore.Http;
     using Newtonsoft.Json;
+    using Microsoft.Extensions.Configuration;
+    using LMS.SharedFiles;
+    using LMS.MVC.Helper;
 
     public class HomeController : Controller
     {
         private readonly BookRepository bookRepository;
         private readonly UserRepository userRepository;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "HomeController";
 
         public HomeController(BookRepository bookRepository, UserRepository userRepository)
         {
             this.bookRepository = bookRepository;
             this.userRepository = userRepository;
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                string email = User.Identity.Name;
-                string[] emailObjects = email.Split('#');
-                email = emailObjects[emailObjects.Length - 1];
-                UserDTO user = await userRepository.GetUserByName(email);
-                if (user == null)
+                if (User.Identity.IsAuthenticated)
                 {
-                    UserDTO newUser = new UserDTO();
-                    newUser.userName = email;
-                    newUser.locationId = 1;
+                    string email = User.Identity.Name;
+                    string[] emailObjects = email.Split('#');
+                    email = emailObjects[emailObjects.Length - 1];
+                    UserDTO user = await userRepository.GetUserByName(email);
+                    if (user == null)
+                    {
+                        UserDTO newUser = new UserDTO();
+                        newUser.userName = email;
+                        newUser.locationId = 1;
+                        if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
+                            newUser.roleId = 1;
+                        else
+                            newUser.roleId = 2;
+
+                        HttpContext.Session.SetString("userEmail", email);
+                        await userRepository.AddNewUser(newUser);
+                    }
+
                     if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
-                        newUser.roleId = 1;
+                    {
+                        applicationInsightsTracking.TrackEvent("Student: " + user.userName + " Logged In at: " + DateTime.UtcNow);
+                        HttpContext.Session.SetString("userEmail", email);
+                        return RedirectToAction("Index", "Student");
+                    }
+                    else if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Librarian"))
+                    {
+                        applicationInsightsTracking.TrackEvent("Librarian: " + user.userName + " Logged In at: " + DateTime.UtcNow);
+                        HttpContext.Session.SetString("userEmail", email);
+                        return RedirectToAction("Index", "Librarian");
+                    }
                     else
-                        newUser.roleId = 2;
-
-                    HttpContext.Session.SetString("userEmail", email);
-                    await userRepository.AddNewUser(newUser);
-                }
-
-                if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
-                {
-                    HttpContext.Session.SetString("userEmail", email);
-                    return RedirectToAction("Index", "Student");
-                }
-                else if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Librarian"))
-                {
-                    HttpContext.Session.SetString("userEmail", email);
-                    return RedirectToAction("Index", "Librarian");
+                    {
+                        HttpContext.Session.SetString("userEmail", "");
+                        return View(await bookRepository.GetBooks(""));
+                    }
                 }
                 else
                 {
@@ -64,36 +80,71 @@ namespace LMS.MVC.Controllers
                     return View(await bookRepository.GetBooks(""));
                 }
             }
-            else
+            catch(Exception e)
             {
-                HttpContext.Session.SetString("userEmail", "");
-                return View(await bookRepository.GetBooks(""));
-            }          
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] int id)
         {
-            BookDTO book = await bookRepository.GetBookById(id);
-            return View(book);
+            try
+            {
+                BookDTO book = await bookRepository.GetBookById(id);
+                if (book != null)
+                    return View(book);
+                else
+                    throw new Exception(className + "/BookDetails(): book object returned as null from the service layer");
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            try
+            {
+                ViewData["Message"] = "Your application description page.";
 
-            return View();
+                return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            try
+            {
+                ViewData["Message"] = "Your contact page.";
 
-            return View();
+                return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [AllowAnonymous]

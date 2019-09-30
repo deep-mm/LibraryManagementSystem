@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LMS.MVC.Helper;
 using LMS.MVC.Models;
 using LMS.MVC.Services;
 using LMS.SharedFiles.DTOs;
@@ -19,53 +20,169 @@ namespace LMS.MVC.Controllers
         private readonly LibraryRepository libraryRepository;
         private readonly BookRepository bookRepository;
         private readonly UserRepository userRepository;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "StudentController";
 
         public StudentController(LibraryRepository libraryRepository, BookRepository bookRepository, UserRepository userRepository)
         {
             this.libraryRepository = libraryRepository;
             this.bookRepository = bookRepository;
             this.userRepository = userRepository;
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<BookDTO> allBooks = await libraryRepository.GetAvailaibleBooks();
-            return View(allBooks);
+            try
+            {
+                IEnumerable<BookDTO> allBooks = await libraryRepository.GetAvailaibleBooks();
+                if (allBooks != null)
+                    return View(allBooks);
+                else
+                    throw new NullReferenceException(className + "/Index(): allBooks array returned as null from libraryRepository");
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] int id)
         {
-            BookDTO book = await bookRepository.GetBookById(id);
-            return View(book);
+            try
+            {
+                if (id != 0) {
+                    BookDTO book = await bookRepository.GetBookById(id);
+                    return View(book);
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/BookDetails(): id parameter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> History()
         {
-            string email = HttpContext.Session.GetString("userEmail");
-            UserDTO user = await userRepository.GetUserByName(email);
-            int userId = user.userId;
-            IEnumerable<BookOrdersDTO> bookOrdersDTOs = await userRepository.GetBookHistory(userId);
-            return View(bookOrdersDTOs);
+            try
+            {
+                string email = HttpContext.Session.GetString("userEmail");
+                if (email != null)
+                {
+                    UserDTO user = await userRepository.GetUserByName(email);
+                    if (user != null)
+                    {
+                        int userId = user.userId;
+                        IEnumerable<BookOrdersDTO> bookOrdersDTOs = await userRepository.GetBookHistory(userId);
+                        if(bookOrdersDTOs!=null)
+                            return View(bookOrdersDTOs);
+                        else
+                            throw new NullReferenceException(className + "/History(): bookOrderDTOs object array returned as null from userRepository");
+                    }
+                    else
+                    {
+                        throw new NullReferenceException(className + "/History(): user object returned as null from userRepository");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("SignOut", "Account");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> Checkout([FromRoute] int id)
         {
-            string email = HttpContext.Session.GetString("userEmail");
-            //If null add session expired and logout
-            UserDTO user = await userRepository.GetUserByName(email);
-            int userId = user.userId;
-            bool result = await libraryRepository.CheckoutBook(id, userId);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (id != 0)
+                {
+                    string email = HttpContext.Session.GetString("userEmail");
+                    if (email != null)
+                    {
+                        UserDTO user = await userRepository.GetUserByName(email);
+                        if (user != null)
+                        {
+                            int userId = user.userId;
+                            bool result = await libraryRepository.CheckoutBook(id, userId);
+                            if (result == true)
+                                return RedirectToAction(nameof(Index));
+                            else
+                                throw new Exception(className + "/Checkout(): Result returned as false from the libraryRepository");
+                        }
+                        else
+                        {
+                            throw new NullReferenceException(className + "/Checkout(): user object returned as null from userRepository");
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("SignOut", "Account");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/Checkout(): id parameter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> Return([FromRoute] int id)
         {
-            string email = HttpContext.Session.GetString("userEmail");
-            //If null add session expired and logout
-            UserDTO user = await userRepository.GetUserByName(email);
-            int userId = user.userId;
-            await libraryRepository.ReturnBook(id,userId);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (id != 0)
+                {
+                    string email = HttpContext.Session.GetString("userEmail");
+                    if (email != null)
+                    {
+                        UserDTO user = await userRepository.GetUserByName(email);
+                        if (user != null)
+                        {
+                            int userId = user.userId;
+                            bool result = await libraryRepository.ReturnBook(id, userId);
+                            if(result==true)
+                                return RedirectToAction(nameof(Index));
+                            else
+                                throw new Exception(className + "/Return(): Result returned as false from the libraryRepository");
+                        }
+                        else
+                        {
+                            throw new NullReferenceException(className + "/Return(): user object returned as null from userRepository");
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("SignOut", "Account");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/Return(): id parameter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
+
         }
 
     }

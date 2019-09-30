@@ -22,6 +22,7 @@ namespace LMS.DataAccessLayer.Repositories
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
+        private string className = "BookRepository";
 
         public BookRepository(ReadDBContext readDBContext, IMapper mapper)
         {
@@ -34,17 +35,31 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<bool> AddNewBook(BookDTO newBook, int libraryId)
         {
-            Book mappedBook = mapper.Map<Book>(newBook); //Mapping BookDTO to Book
-            await readDBContext.books.AddAsync(mappedBook); //Adding book to DB
-            await Commit();
-            BookLibraryAssociation bookLibraryAssociation = new BookLibraryAssociation();
-            bookLibraryAssociation.bookId = mappedBook.bookId;
-            bookLibraryAssociation.libraryId = libraryId;
-            bookLibraryAssociation.isAvailable = true;
-            bookLibraryAssociation.isCheckedOut = false;
-            await readDBContext.bookLibraryAssociations.AddAsync(bookLibraryAssociation); //Adding book to DB
-            await Commit();
-            return true;
+            if (newBook == null)
+            {
+                throw new ArgumentNullException(className + "/AddNewBook(): The newBook object parameter is null");
+            }
+            else if (libraryId == 0)
+            {
+                throw new ArgumentNullException(className + "/AddNewBook(): The libraryId parameter is null");
+            }
+            else
+            {
+                Book mappedBook = mapper.Map<Book>(newBook); //Mapping BookDTO to Book
+                await readDBContext.books.AddAsync(mappedBook); //Adding book to DB
+                await Commit();
+
+                //Creating a new BookLibraryAssociation to insert into the DB
+                BookLibraryAssociation bookLibraryAssociation = new BookLibraryAssociation();
+                bookLibraryAssociation.bookId = mappedBook.bookId;
+                bookLibraryAssociation.libraryId = libraryId;
+                bookLibraryAssociation.isAvailable = true;
+                bookLibraryAssociation.isCheckedOut = false;
+
+                await readDBContext.bookLibraryAssociations.AddAsync(bookLibraryAssociation); //Adding book to DB
+                await Commit();
+                return true;
+            }
         }
 
         /*
@@ -52,29 +67,43 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<bool> DeleteBook(int id)
         {
+            if (id != 0)
+            {
                 Book mappedBook = await readDBContext.books.FindAsync(id);
-                BookLibraryAssociation bookLibraryAssociation = readDBContext.bookLibraryAssociations.Where(b => b.bookId == mappedBook.bookId).FirstOrDefault();
-                if (bookLibraryAssociation != null)
+                if (mappedBook != null)
                 {
-                    bool availaibilityStatus = bookLibraryAssociation.isAvailable;
-                    if (availaibilityStatus)
+                    BookLibraryAssociation bookLibraryAssociation = readDBContext.bookLibraryAssociations.Where(b => b.bookId == mappedBook.bookId).FirstOrDefault();
+                    if (bookLibraryAssociation != null)
                     {
-                        readDBContext.bookLibraryAssociations.Remove(bookLibraryAssociation);
-                        await Commit();
-                        readDBContext.books.Remove(mappedBook); //Deleting a book from DB
-                        await Commit();
-                        return true;
+                        bool availaibilityStatus = bookLibraryAssociation.isAvailable;
+                        if (availaibilityStatus)
+                        {
+                            readDBContext.bookLibraryAssociations.Remove(bookLibraryAssociation);
+                            await Commit();
+                            readDBContext.books.Remove(mappedBook); //Deleting a book from DB
+                            await Commit();
+                            return true;
+                        }
+                        else
+                            return false;
                     }
                     else
-                        return false;
+                    {
+                        readDBContext.Remove(mappedBook); //Deleting a book from DB
+                        await Commit();
+                        return true;
+                        //return false;
+                    }
                 }
                 else
                 {
-                    readDBContext.Remove(mappedBook); //Deleting a book from DB
-                    await Commit();
-                    return true;
-                    //return false;
+                    throw new NullReferenceException(className + $"/DeleteBook(): The Book for id: {id} was not found");
                 }
+            }
+            else
+            {
+                throw new ArgumentNullException(className + "/DeleteBook(): The id parameter received is null");
+            }
         }
 
         /*
@@ -82,13 +111,23 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<BookDTO> GetBookById(int id)
         {
-            Book book = await readDBContext.books.FindAsync(id);
-            BookDTO mappedDTO = mapper.Map<BookDTO>(book);
-            if (book != null)
+            if (id != 0)
             {
-                return mappedDTO;
+                Book book = await readDBContext.books.FindAsync(id);
+                if (book != null)
+                {
+                    BookDTO mappedDTO = mapper.Map<BookDTO>(book);
+                    return mappedDTO;
+                }
+                else
+                {
+                    throw new NullReferenceException(className + $"/GetBookById(): The Book for id: {id} was not found");
+                }
             }
-            return null;
+            else
+            {
+                throw new ArgumentNullException(className + "/GetBookById(): The id parameter received is null");
+            }
         }
 
         /*
@@ -98,14 +137,27 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<IEnumerable<BookDTO>> GetBookByName(string bookName)
         {
-            var query = from b in readDBContext.books
-                        where b.title.StartsWith(bookName) || string.IsNullOrEmpty(bookName)
-                        orderby b.title
-                        select b;
-            IEnumerable<Book> books = query.AsEnumerable<Book>();
-
-            IEnumerable<BookDTO> bookDTOs = mapper.Map<IEnumerable<BookDTO>>(books);
-            return bookDTOs;
+            if (bookName != null)
+            {
+                var query = from b in readDBContext.books
+                            where b.title.StartsWith(bookName) || string.IsNullOrEmpty(bookName)
+                            orderby b.title
+                            select b;
+                IEnumerable<Book> books = query.AsEnumerable<Book>();
+                if (books != null)
+                {
+                    IEnumerable<BookDTO> bookDTOs = mapper.Map<IEnumerable<BookDTO>>(books);
+                    return bookDTOs;
+                }
+                else
+                {
+                    throw new NullReferenceException(className + $"/GetBookByName(): The Book for name: {bookName} was not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(className + "/GetBookByName(): The bookName parameter received is null");
+            }
         }
 
         /*
@@ -113,12 +165,19 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<bool> UpdateBook(BookDTO newBook)
         {
-            Book mappedBook = mapper.Map<Book>(newBook);
-            var entity = readDBContext.books.Attach(mappedBook);
-            //readDBContext.Update(newBook);
-            entity.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            await Commit();
-            return true;
+            if (newBook != null)
+            {
+                Book mappedBook = mapper.Map<Book>(newBook);
+                var entity = readDBContext.books.Attach(mappedBook);
+                //readDBContext.Update(newBook);
+                entity.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                await Commit();
+                return true;
+            }
+            else
+            {
+                throw new ArgumentNullException(className + "/UpdateBook(): The newBook object parameter received is null");
+            }
         }
 
         /*
@@ -126,7 +185,14 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task Commit()
         {
-            await readDBContext.SaveChangesAsync();
+            try
+            {
+                await readDBContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(className + "/Commit(): Error occured while commiting to database + Exception: "+e.ToString());
+            }
         }
     }
        

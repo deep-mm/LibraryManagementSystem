@@ -6,7 +6,7 @@ namespace LMS.UnitTest
 {
     public class BookRepositoryTests
     {
-        [Fact]
+        //[Fact]
         [Theory]
         [InlineData("")]
         public void AddNewBookSuccess(string name)
@@ -15,6 +15,7 @@ namespace LMS.UnitTest
 
             //r result = sut.exexute();
             //Assert.Equal(result.A);
+            //Assert.Throws, Assert.True, Assert.False
         }
     }
 }

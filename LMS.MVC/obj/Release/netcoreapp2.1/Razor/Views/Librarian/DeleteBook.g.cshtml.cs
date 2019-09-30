@@ -118,7 +118,7 @@ using LMS.MVC.Models;
             WriteLiteral("\r\n        </dd>\r\n    </dl>\r\n        ");
             EndContext();
             BeginContext(778, 94, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "32c1d545bdab400d8b86c64ac1f8498b", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c3f20d6ea8684ee5a437205a0b6f174d", async() => {
                 BeginContext(862, 6, true);
                 WriteLiteral("Submit");
                 EndContext();
@@ -154,7 +154,7 @@ using LMS.MVC.Models;
             WriteLiteral(" |\r\n        ");
             EndContext();
             BeginContext(884, 38, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6df0fa84973d4724b2b3173d7a34e123", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3dd812ce2196403787cb641f8be29fb2", async() => {
                 BeginContext(906, 12, true);
                 WriteLiteral("Back to List");
                 EndContext();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LMS.APILayer.Services;
 using LMS.BusinessLogic.Services;
 using LMS.DataAccessLayer.DatabaseContext;
 using LMS.DataAccessLayer.Repositories;
@@ -20,11 +21,14 @@ namespace LMS.APILayer.Controllers
     public class LibraryController : Controller
     {
         private readonly LibraryBusinessLogic libraryBusinessLogic;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "LibraryController";
 
         public LibraryController(ReadDBContext readDBContext, IMapper mapper)
         {
             LibraryRepository libraryRepository = new LibraryRepository(readDBContext, mapper);
             this.libraryBusinessLogic = new LibraryBusinessLogic(libraryRepository);
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         public IConfiguration Configuration { get; }
@@ -36,11 +40,15 @@ namespace LMS.APILayer.Controllers
             try
             {
                 IEnumerable<BookDTO> availaibleBooks = await libraryBusinessLogic.GetAllAvailaibleBooks();
-                return Ok(availaibleBooks);
+                if (availaibleBooks != null)
+                    return Ok(availaibleBooks);
+
+                else
+                    throw new Exception(className + "/GetAllAvailaibleBooks(): AvailaibleBooks returned as null from the database");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -55,11 +63,11 @@ namespace LMS.APILayer.Controllers
                 if (status == true)
                     return Ok();
                 else
-                    return BadRequest("Error occured while checking out the book");
+                    throw new Exception(className + "/CheckoutBook(): Status returned as false from the database");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while checking out the book");
             }
         }
@@ -75,11 +83,11 @@ namespace LMS.APILayer.Controllers
                 if (status == true)
                     return Ok();
                 else
-                    return BadRequest("Error occured while returning the book");
+                    throw new Exception(className + "/ReturnBook(): Status returned as false from the database");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while returning the book");
             }
         }

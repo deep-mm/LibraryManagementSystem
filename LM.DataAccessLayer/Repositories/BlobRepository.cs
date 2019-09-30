@@ -15,8 +15,8 @@ namespace LMS.DataAccessLayer.Repositories
     {
         private readonly ReadDBContext readDBContext;
         private readonly IMapper mapper;
-        private readonly ICloudBlob cloudBlob;
         private CloudBlobClient cloudBlobClient;
+        private string className = "BlobRepository";
 
         public BlobRepository(ReadDBContext readDBContext, IMapper mapper, IConfiguration configuration)
         {
@@ -30,9 +30,9 @@ namespace LMS.DataAccessLayer.Repositories
 
         public void InitializeBlob()
         {
-            try
+            string azureStorageConnectionString = Configuration["AzureStorageConnectionString"];
+            if (azureStorageConnectionString != null)
             {
-                string azureStorageConnectionString = Configuration["AzureStorageConnectionString"];
                 CloudStorageAccount storageAccount;
                 if (CloudStorageAccount.TryParse(azureStorageConnectionString, out storageAccount))
                 {
@@ -40,12 +40,12 @@ namespace LMS.DataAccessLayer.Repositories
                 }
                 else
                 {
-                    Console.WriteLine("Connection String is invalid");
+                    throw new Exception(className + "/InitializeBlob(): Connection String is invalid");
                 }
             }
-            catch(Exception e)
+            else
             {
-
+                throw new ArgumentNullException(className + "/InitializeBlob(): AzureStorageConnectionString is null");
             }
         }
 
@@ -53,6 +53,14 @@ namespace LMS.DataAccessLayer.Repositories
         {
             try
             {
+                if (bookImageDTO == null)
+                {
+                    throw new ArgumentNullException(className + "/UploadImage(): The bookImageDTO object parameter is null");
+                }
+                else if(blobName == null)
+                {
+                    throw new ArgumentNullException(className + "/UploadImage(): The blobName string parameter is null");
+                }
                 string genre = bookImageDTO.bookDTO.genre.ToString();
                 CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(blobName);
                 await cloudBlobContainer.CreateIfNotExistsAsync();
@@ -68,7 +76,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             catch(Exception e)
             {
-                return null;
+                throw new Exception("Error occured while uploading image to the blob , exception = "+e.ToString());
             }
         }
     }

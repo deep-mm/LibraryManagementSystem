@@ -18,89 +18,25 @@ namespace LMS.BusinessLogic.Services
 
         public async Task<UserDTO> GetUserById(int userId)
         {
-            try
-            {
-                if(userId != 0)
-                {
-                    return await userRepository.GetUserById(userId);
-                }
-                else
-                {
-                    //throw a new exception
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-                //TODO: Log Exception in ILogger,File,Application Insights
-                return null;
-            }
+            return await userRepository.GetUserById(userId);
         }
 
         // Get a user by its Username
         public async Task<UserDTO> GetUserByName(string username)
         {
-            try
-            {
-                if (username != null)
-                {
-                    return await userRepository.GetUserByName(username);
-                }
-                else
-                {
-                    //throw a new exception
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-                //TODO: Log Exception in ILogger,File,Application Insights
-                return null;
-            }
+            return await userRepository.GetUserByName(username);
         }
 
         //Add a new user entry to the database
         public async Task<bool> AddNewUser(UserDTO userDTO)
         {
-            try
-            {
-                if (userDTO != null)
-                {
-                    return await userRepository.AddNewUser(userDTO);
-                }
-                else
-                {
-                    //throw a new exception
-                }
-                return false;
-            }
-            catch (Exception e)
-            {
-                //TODO: Log Exception in ILogger,File,Application Insights
-                return false;
-            }
+            return await userRepository.AddNewUser(userDTO);
         }
 
-            //Get all books checkedout by a user
+        //Get all books checkedout by a user
         public async Task<IEnumerable<BookOrdersDTO>> UserOrderHistory(int userId)
         {
-            try
-            {
-                if (userId != 0)
-                {
-                    return await userRepository.UserOrderHistory(userId);
-                }
-                else
-                {
-                    //throw a new exception
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-                //TODO: Log Exception in ILogger,File,Application Insights
-                return null;
-            }
+            return await userRepository.UserOrderHistory(userId);
         }
     }
 }

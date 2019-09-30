@@ -94,7 +94,7 @@ using LMS.MVC.Models;
             WriteLiteral("            <tr>\r\n                <td>\r\n                    ");
             EndContext();
             BeginContext(598, 101, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e9e7905ccf1e4991b9af7fc9b3c014f0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "30dc9baa751c468ca3d7e809ff8716d2", async() => {
                 BeginContext(655, 40, false);
 #line 32 "C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\Views\Home\Index.cshtml"
                                                                        Write(Html.DisplayFor(modelItem => item.title));

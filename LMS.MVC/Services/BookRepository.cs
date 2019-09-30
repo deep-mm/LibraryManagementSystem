@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using LMS.MVC.Helper;
 using LMS.SharedFiles.DTOs;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace LMS.MVC.Services
         private readonly Helper.Helper helper;
         private bool tokenSet = false;
         private HttpResponseMessage response;
+        private string className = "BookRepository";
+        private ApplicationInsightsTracking applicationInsightsTracking;
 
         public BookRepository(HttpClient httpClient, IConfiguration configuration)
         {
@@ -24,6 +27,7 @@ namespace LMS.MVC.Services
             this.httpClient.BaseAddress = new Uri(configuration["Api:BaseUrl"]);
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             this.httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
         public async Task setToken()
         {
@@ -36,15 +40,23 @@ namespace LMS.MVC.Services
                 }
                 catch(Exception e)
                 {
-                    //Log Exception
                     tokenSet = false;
+                    throw new Exception(className + "/setToken(): Error occured while setting token", e);
                 }
             }
         }
 
         public async Task<bool> AddBook(BookDTO newBook, int libraryId)
         {
-            try
+            if (newBook == null)
+            {
+                throw new ArgumentNullException(className + "/AddBook(): newBook object parameter in null");
+            }
+            else if (libraryId == 0)
+            {
+                throw new ArgumentNullException(className + "/AddBook(): libraryId object parameter in null");
+            }
+            else
             {
                 await setToken();
                 var myContent = JsonConvert.SerializeObject(newBook);
@@ -55,40 +67,35 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/AddBook(): {response.StatusCode}");
                 }
                 return true;
-            }
-            catch(Exception e)
-            {
-                //Log Exception
-                return false;
             }
         }
 
         public async Task<bool> DeleteBook(int bookId)
         {
-            try
+            if (bookId != 0)
             {
                 await setToken();
                 var response = await httpClient.DeleteAsync($"api/books/delete/{bookId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/DeleteBook(): {response.StatusCode}");
                 }
                 return true;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return false;
+                throw new ArgumentNullException(className + "/DeleteBook(): bookId object parameter in null");
             }
+        
         }
 
         public async Task<bool> EditBook(BookDTO updatedBook)
         {
-            try
+            if (updatedBook != null)
             {
                 await setToken();
                 var myContent = JsonConvert.SerializeObject(updatedBook);
@@ -99,43 +106,48 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/EditBook(): {response.StatusCode}");
                 }
                 return true;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return false;
+                throw new ArgumentNullException(className + "/EditBook(): updatedBook object parameter received as null");
             }
         }
 
         public async Task<BookDTO> GetBookById(int id)
         {
-            try
+            if (id != 0)
             {
                 await setToken();
                 response = await httpClient.GetAsync($"api/books/id/{id}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/GetBookById(): {response.StatusCode}");
                 }
 
-                var stringData = response.Content.ReadAsStringAsync().Result;
-                BookDTO data = JsonConvert.DeserializeObject<BookDTO>(stringData);
-                return data;
+                var stringData = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    BookDTO data = JsonConvert.DeserializeObject<BookDTO>(stringData);
+                    return data;
+                }
+                catch(JsonSerializationException exception)
+                {
+                    throw new JsonSerializationException(className + "/GetBookById(): Error occured in Json Deserialization" , exception);
+                }
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return null;
+                throw new ArgumentNullException(className + "/GetBookById(): id object parameter received as null");
             }
         }
 
         public async Task<IEnumerable<BookDTO>> GetBooks(String searchTerm)
         {
-            try
+            if (searchTerm != null)
             {
                 await setToken();
                 if (searchTerm.Equals(""))
@@ -145,23 +157,29 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/GetBooks(): {response.StatusCode}");
                 }
 
-                var stringData = response.Content.ReadAsStringAsync().Result;
-                IEnumerable<BookDTO> data = JsonConvert.DeserializeObject<IEnumerable<BookDTO>>(stringData);
-                return data;
+                var stringData = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    IEnumerable<BookDTO> data = JsonConvert.DeserializeObject<IEnumerable<BookDTO>>(stringData);
+                    return data;
+                }
+                catch (JsonSerializationException exception)
+                {
+                    throw new JsonSerializationException(className + "/GetBooks(): Error occured in Json Deserialization", exception);
+                }
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return null;
+                throw new ArgumentNullException(className + "/GetBooks(): searchTerm string parameter received as null");
             }
         }
 
         public async Task<string> UploadImage(BookImageDTO bookImageDTO)
         {
-            try
+            if (bookImageDTO != null)
             {
                 await setToken();
                 var myContent = JsonConvert.SerializeObject(bookImageDTO);
@@ -172,15 +190,14 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/UploadImage(): {response.StatusCode}");
                 }
                 var stringData = await response.Content.ReadAsStringAsync();
                 return stringData;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return null;
+                throw new ArgumentNullException(className + "/UploadImage(): bookImageDTO object parameter received as null");
             }
         }
     }

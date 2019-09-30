@@ -39,6 +39,7 @@
                 <select asp-for="@Model.bookDTO.genre" class="form-control" asp-items="@Html.GetEnumSelectList<LMS.SharedFiles.DTOs.GenreTypes>()"></select>
                 <span asp-validation-for="@Model.bookDTO.genre" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="@Model.bookDTO.imageUrl" />
             <div class="form-group">
                 <label class="control-label">Update Book Image</label>
                 <input asp-for="@Model.bookImage" type="file" class="form-control" accept="image/*" />

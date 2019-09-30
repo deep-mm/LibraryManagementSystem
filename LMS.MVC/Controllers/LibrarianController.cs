@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using LMS.MVC.Helper;
 using LMS.MVC.Models;
 using LMS.MVC.Services;
 using LMS.SharedFiles.DTOs;
@@ -18,83 +19,166 @@ namespace LMS.MVC.Controllers
     {
         private readonly LibraryRepository libraryRepository;
         private readonly BookRepository bookRepository;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "LibrarianController";
 
         public LibrarianController(LibraryRepository libraryRepository, BookRepository bookRepository)
         {
             this.libraryRepository = libraryRepository;
             this.bookRepository = bookRepository;
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<BookDTO> books = await bookRepository.GetBooks("");
-            return View(books);
+            try
+            {
+                IEnumerable<BookDTO> books = await bookRepository.GetBooks("");
+                if (books != null)
+                {
+                    return View(books);
+                }
+                else
+                    throw new Exception(className + "/Index(): books array object returned as null from the service layer");
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public IActionResult CreateBook()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpPost, ActionName("CreateBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBook(BookDTO book)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await bookRepository.AddBook(book,2);
-                return RedirectToAction(nameof(Index));
+                if (book != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        bool status = await bookRepository.AddBook(book, 2); //TODO: Update libraryId
+                        if (status == true)
+                            return RedirectToAction(nameof(Index));
+                        else
+                            throw new Exception(className + "/CreateBook(): Status returned from the bookRepository layer is false");
+                    }
+                    return View(book);
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/CreateBook(): book object parameter is null");
+                }
             }
-            return View(book);
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         // GET: Books/Delete/5
         public async Task<IActionResult> DeleteBook(int id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == 0)
+                {
+                    throw new ArgumentNullException(className + "/DeleteBook(): id parameter is null");
+                }
 
-            var book = await bookRepository.GetBookById(id);
-            if (book == null)
+                var book = await bookRepository.GetBookById(id);
+                if (book == null)
+                {
+                    throw new NullReferenceException(className + "/DeleteBook(): book object returned as null from the service layer");
+                }
+
+                return View(book);
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
             }
-
-            return View(book);
         }
 
         // POST: Books/Delete/5
   
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await bookRepository.DeleteBook(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (id != 0)
+                {
+                    bool status = await bookRepository.DeleteBook(id);
+                    if (status == true)
+                        return RedirectToAction(nameof(Index));
+                    else
+                        throw new Exception(className + "/DeleteConfirmed(): Status returned from the bookRepository layer is false");
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/DeleteConfirmed(): id parameter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] int id)
         {
-            BookDTO book = await bookRepository.GetBookById(id);
-            return View(book);
+            try
+            {
+                BookDTO book = await bookRepository.GetBookById(id);
+                if (book != null)
+                    return View(book);
+                else
+                    throw new NullReferenceException(className + "/BookDetails(): book object returned as null from the service layer");
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         // GET: Books/Edit/5
         public async Task<IActionResult> EditBook(int id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == 0)
+                {
+                    throw new ArgumentNullException(className + "/EditBook(): id oject paramter is null");
+                }
 
-            var book = await bookRepository.GetBookById(id);
-            if (book == null)
-            {
-                return NotFound();
+                var book = await bookRepository.GetBookById(id);
+                BookFormDTO bookFormDTO = new BookFormDTO();
+                bookFormDTO.bookDTO = book ?? throw new Exception(className + "/EditBook(): book object returned as null from the service layer");
+                return View(bookFormDTO);
             }
-            BookFormDTO bookFormDTO = new BookFormDTO();
-            bookFormDTO.bookDTO = book;
-            return View(bookFormDTO);
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         // POST: Books/Edit/5
@@ -104,26 +188,51 @@ namespace LMS.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditBook(BookFormDTO book)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BookImageDTO bookImageDTO = new BookImageDTO();
-                bookImageDTO.bookDTO = book.bookDTO;
-
-                if (book.bookImage != null)
+                if (book != null)
                 {
-                    MemoryStream memoryStream = new MemoryStream();
-                    book.bookImage.CopyTo(memoryStream);
-                    bookImageDTO.bookImage = memoryStream.ToArray();
+                    if (ModelState.IsValid)
+                    {
+                        BookImageDTO bookImageDTO = new BookImageDTO();
+                        bookImageDTO.bookDTO = book.bookDTO;
 
-                    bookImageDTO.fileType = ".png";
-                    string uri = await bookRepository.UploadImage(bookImageDTO);
-                    book.bookDTO.imageUrl = uri.Replace("\"","");
+                        if (book.bookImage != null)
+                        {
+                            MemoryStream memoryStream = new MemoryStream();
+                            book.bookImage.CopyTo(memoryStream);
+                            bookImageDTO.bookImage = memoryStream.ToArray();
+
+                            bookImageDTO.fileType = ".png";
+                            string uri = await bookRepository.UploadImage(bookImageDTO);
+                            if (uri != null)
+                            {
+                                book.bookDTO.imageUrl = uri.Replace("\"", "");
+                            }
+                            else
+                            {
+                                throw new NullReferenceException(className + "/EditBook(): UploadImage function of bookRepository return null uri");
+                            }
+                        }
+
+                        bool status = await bookRepository.EditBook(book.bookDTO);
+                        if(status==true)
+                            return RedirectToAction(nameof(Index));
+                        else
+                            throw new Exception(className + "/EditBook(): Status returned from the bookRepository layer is false");
+                    }
+                    return View(book);
                 }
-
-                await bookRepository.EditBook(book.bookDTO);
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    throw new ArgumentNullException(className + "/EditBook(): book oject paramter is null");
+                }
             }
-            return View(book);
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
         }
     }
 

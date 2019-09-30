@@ -96,7 +96,7 @@ using LMS.MVC.Models;
             WriteLiteral("            <tr>\r\n                <td>\r\n                    ");
             EndContext();
             BeginContext(594, 101, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb6bf7b72db74cecb9d8324ea95945f5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "83db19f035f2429a9bd1ef7604a7bb8a", async() => {
                 BeginContext(651, 40, false);
 #line 32 "C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\Views\Student\Index.cshtml"
                                                                        Write(Html.DisplayFor(modelItem => item.title));
@@ -165,7 +165,7 @@ using LMS.MVC.Models;
             WriteLiteral("\r\n                </td>\r\n                <td>\r\n                    ");
             EndContext();
             BeginContext(1090, 112, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "666de638750a45b190980e8ba553a7b6", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c6a2e0b3945946fda7edc5a97a6adc8e", async() => {
                 BeginContext(1185, 13, true);
                 WriteLiteral("     Checkout");
                 EndContext();

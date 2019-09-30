@@ -17,6 +17,7 @@ namespace LMS.DataAccessLayer.Repositories
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
+        private static string className = "UserRespository";
 
         public UserRepository(ReadDBContext readDBContext, IMapper mapper)
         {
@@ -35,7 +36,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             catch (Exception e)
             {
-                
+                throw new Exception(className+ "/Commit(): Error occured while commiting to database");
             }
         }
 
@@ -44,12 +45,22 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<UserDTO> GetUserById(int userId)
         {
-            User user = await readDBContext.users.FindAsync(userId);
-            if (user != null)
+            if (userId != 0)
             {
-                return mapper.Map<UserDTO>(user);
+                User user = await readDBContext.users.FindAsync(userId);
+                if (user != null)
+                {
+                    return mapper.Map<UserDTO>(user);
+                }
+                else
+                {
+                    throw new NullReferenceException(className+ $"/GetUserById(): The user for id: {userId} was not found");
+                }
             }
-            return null;
+            else
+            {
+                throw new ArgumentNullException(className+ "/GetUserById(): The userId parameter received is null");
+            }
         }
 
         /*
@@ -57,22 +68,39 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<UserDTO> GetUserByName(string username)
         {
-            User user = readDBContext.users.FirstOrDefault(u => u.userName == username);
-            if (user != null)
+            if (username != null)
             {
-                return mapper.Map<UserDTO>(user);
+                User user = readDBContext.users.FirstOrDefault(u => u.userName == username);
+                if (user != null)
+                {
+                    return mapper.Map<UserDTO>(user);
+                }
+                else
+                {
+                    throw new NullReferenceException(className+ $"/GetUserByName(): The user for name {username} was not found");
+                }
             }
-            return null;
+            else
+            {
+                throw new ArgumentNullException(className + "/GetUserByName():The username parameter received is null");
+            }
         }
         /*
          * Add a new user to the database
          */
         public async Task<bool> AddNewUser(UserDTO userDTO)
         {
-            User user = mapper.Map<User>(userDTO);
-            await readDBContext.users.AddAsync(user);
-            await Commit();
-            return true;
+            if (userDTO != null)
+            {
+                User user = mapper.Map<User>(userDTO);
+                await readDBContext.users.AddAsync(user);
+                await Commit();
+                return true;
+            }
+            else
+            {
+                throw new ArgumentNullException(className+ "/AddNewUser(): The userDTO object parameter received is null");
+            }
         }
 
         /*
@@ -80,32 +108,54 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<IEnumerable<BookOrdersDTO>> UserOrderHistory(int userId)
         {
-            IEnumerable<UserBookAssociation> userBookAssociations = readDBContext.userBookAssociations.Where(u => u.userId == userId);
-            List<BookOrdersDTO> bookOrdersDTOs = new List<BookOrdersDTO>();
-
-            foreach (var uba in userBookAssociations)
+            if (userId != 0)
             {
-                BookLibraryAssociation bla = await readDBContext.bookLibraryAssociations.FindAsync(uba.BookLibraryAssociationId);
-                if (bla != null)
+                IEnumerable<UserBookAssociation> userBookAssociations = readDBContext.userBookAssociations.Where(u => u.userId == userId);
+
+                if (userBookAssociations != null)
                 {
-                    Book b = await readDBContext.books.FindAsync(bla.bookId);
+                    List<BookOrdersDTO> bookOrdersDTOs = new List<BookOrdersDTO>();
 
-                    BookOrdersDTO bookOrdersDTO = new BookOrdersDTO();
-                    bookOrdersDTO.BookName = b.title;
-                    bookOrdersDTO.DueDate = uba.DueDate;
-                    bookOrdersDTO.LibraryId = bla.libraryId;
-                    bookOrdersDTO.userBookAssociationId = b.bookId;
+                    foreach (var uba in userBookAssociations)
+                    {
+                        BookLibraryAssociation bla = await readDBContext.bookLibraryAssociations.FindAsync(uba.BookLibraryAssociationId);
+                        if (bla != null)
+                        {
+                            Book b = await readDBContext.books.FindAsync(bla.bookId);
 
-                    bookOrdersDTOs.Add(bookOrdersDTO);
+                            if (b != null)
+                            {
+                                BookOrdersDTO bookOrdersDTO = new BookOrdersDTO();
+                                bookOrdersDTO.BookName = b.title;
+                                bookOrdersDTO.DueDate = uba.DueDate;
+                                bookOrdersDTO.LibraryId = bla.libraryId;
+                                bookOrdersDTO.userBookAssociationId = b.bookId;
+
+                                bookOrdersDTOs.Add(bookOrdersDTO);
+                            }
+                            else
+                            {
+                                throw new NullReferenceException(className+ $"/UserOrderHistory(): The book for id: {bla.bookId} was not found");
+                            }
+                        }
+                        else
+                        {
+                            throw new NullReferenceException(className + $"/UserOrderHistory(): The bookLibraryAssociation for id: {uba.BookLibraryAssociationId} was not found");
+                        }
+                    }
+
+                    return bookOrdersDTOs;
                 }
                 else
                 {
-                    //Log the exception
-                    throw new Exception();
+                    throw new NullReferenceException(className + $"/UserOrderHistory(): The userBookAssociations for userId: {userId} was not found");
                 }
             }
+            else
+            {
+                throw new ArgumentNullException(className + "/UserOrderHistory(): The userId parameter received is null");
+            }
 
-            return bookOrdersDTOs;
         }
     }
 }

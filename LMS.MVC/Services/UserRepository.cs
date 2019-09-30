@@ -17,6 +17,7 @@ namespace LMS.MVC.Services
         private readonly Helper.Helper helper;
         private bool tokenSet = false;
         private HttpResponseMessage response;
+        private string className = "UserRepository";
 
         public UserRepository(HttpClient httpClient, IConfiguration configuration)
         {
@@ -37,15 +38,15 @@ namespace LMS.MVC.Services
                 }
                 catch (Exception e)
                 {
-                    //Log Exception
                     tokenSet = false;
+                    throw new Exception(className + "/setToken(): Error occured while setting token", e);
                 }
             }
         }
 
         public async Task<bool> AddNewUser(UserDTO user)
         {
-            try
+            if (user != null)
             {
                 await setToken();
                 var myContent = JsonConvert.SerializeObject(user);
@@ -56,43 +57,41 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/AddNewUser(): {response.StatusCode}");
                 }
                 return true;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return false;
+                throw new ArgumentNullException(className + "/AddNewUser(): user object parameter in null");
             }
         }
 
         public async Task<IEnumerable<BookOrdersDTO>> GetBookHistory(int userId)
         {
-            try
+            if (userId != 0)
             {
                 await setToken();
                 var response = await httpClient.GetAsync($"api/users/history/{userId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/GetBookHistory(): {response.StatusCode}");
                 }
 
-                var stringData = response.Content.ReadAsStringAsync().Result;
+                var stringData = await response.Content.ReadAsStringAsync();
                 IEnumerable<BookOrdersDTO> data = JsonConvert.DeserializeObject<IEnumerable<BookOrdersDTO>>(stringData);
                 return data;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return null;
+                throw new ArgumentNullException(className + "/GetBookHistory(): userId object parameter in null");
             }
         }
 
         public async Task<UserDTO> GetUserByName(string name)
         {
-            try
+            if (name != null)
             {
                 await setToken();
                 string url = "api/users/name/" + $"{Base64UrlEncoder.Encode(name)}";
@@ -100,17 +99,16 @@ namespace LMS.MVC.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return null;
+                    throw new Exception(className + $"/GetUserByName(): {response.StatusCode}");
                 }
 
-                var stringData = response.Content.ReadAsStringAsync().Result;
+                var stringData = await response.Content.ReadAsStringAsync();
                 UserDTO data = JsonConvert.DeserializeObject<UserDTO>(stringData);
                 return data;
             }
-            catch (Exception e)
+            else
             {
-                //Log Exception
-                return null;
+                throw new ArgumentNullException(className + "/GetUserByName(): name string parameter in null");
             }
         }
     }

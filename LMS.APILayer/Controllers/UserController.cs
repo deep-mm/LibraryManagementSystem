@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using LMS.APILayer.Services;
 using LMS.BusinessLogic.Services;
 using LMS.DataAccessLayer.DatabaseContext;
 using LMS.DataAccessLayer.Repositories;
@@ -22,11 +23,14 @@ namespace LMS.APILayer.Controllers
     public class UserController : Controller
     {
         private readonly UserBusinessLogic userBusinessLogic;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "UserController";
 
         public UserController(ReadDBContext readDBContext, IMapper mapper)
         {
             UserRepository userRepository = new UserRepository(readDBContext, mapper);
             this.userBusinessLogic = new UserBusinessLogic(userRepository);
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         // GET: api/users/id/1
@@ -36,11 +40,14 @@ namespace LMS.APILayer.Controllers
             try
             {
                 UserDTO user = await userBusinessLogic.GetUserById(userId);
-                return Ok(user);
+                if(user!=null)
+                    return Ok(user);
+                else
+                    throw new Exception(className + "/GetUserById(): user object returned as null from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -52,11 +59,14 @@ namespace LMS.APILayer.Controllers
             try
             {
                 UserDTO user = await userBusinessLogic.GetUserByName(Base64UrlEncoder.Decode(username));
-                return Ok(user);
+                if (user != null)
+                    return Ok(user);
+                else
+                    throw new Exception(className + "/GetUserByName(): user object returned as null from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -68,11 +78,18 @@ namespace LMS.APILayer.Controllers
             try
             {
                 IEnumerable<BookOrdersDTO> bookOrdersDTOs = await userBusinessLogic.UserOrderHistory(userId);
-                return Ok(bookOrdersDTOs);
+                if (bookOrdersDTOs != null)
+                {
+                    return Ok(bookOrdersDTOs);
+                }
+                else
+                {
+                    throw new Exception(className + "/GetBookOrders(): bookOrdersDTOs object returned as null from DataAccessLayer");
+                }
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -92,11 +109,11 @@ namespace LMS.APILayer.Controllers
                 if (status == true)
                     return Ok(HttpStatusCode.Created);
                 else
-                    return BadRequest("Error occured while adding a new book");
+                    throw new Exception(className + "/AddNewUser(): status returned as false from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }

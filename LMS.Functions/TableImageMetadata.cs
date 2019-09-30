@@ -35,7 +35,7 @@ namespace LMS.Functions
             }
             catch (Exception e)
             {
-
+                //Track Exception
             }
             log.LogInformation($"C# Blob trigger function Processed blob\n Id: {book.bookId} \n Name : {book.bookName}");
         }

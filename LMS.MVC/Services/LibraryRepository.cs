@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using LMS.MVC.Helper;
 using LMS.SharedFiles.DTOs;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ namespace LMS.MVC.Services
         private readonly Helper.Helper helper;
         private bool tokenSet = false;
         private HttpResponseMessage response;
+        private string className = "LibraryRepository";
 
         public LibraryRepository(HttpClient httpClient, IConfiguration configuration)
         {
@@ -36,73 +38,76 @@ namespace LMS.MVC.Services
                 }
                 catch (Exception e)
                 {
-                    //Log Exception
                     tokenSet = false;
+                    throw new Exception(className + "/setToken(): Error occured while setting token" , e);
                 }
             }
         }
         public async Task<bool> CheckoutBook(int bookId, int userId)
         {
-            try
+            if (bookId == 0)
+            {
+                throw new ArgumentNullException(className + "/CheckoutBook(): The bookId object parameter is null");
+            }
+            else if (userId == 0)
+            {
+                throw new ArgumentNullException(className + "/CheckoutBook(): The userId object parameter is null");
+            }
+            else
             {
                 await setToken();
                 var response = await httpClient.GetAsync($"api/library/checkout/{bookId}/{userId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"{response.StatusCode}");
+                    throw new Exception(className + $"/CheckoutBook(): {response.StatusCode}");
                 }
                 return true;
-            }
-            catch (Exception e)
-            {
-                //Log Exception
-                return false;
             }
         }
 
         public async Task<IEnumerable<BookDTO>> GetAvailaibleBooks()
         {
+            await setToken();
+            response = await httpClient.GetAsync("api/library/availaibleBooks");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(className + $"/GetAvailaibleBooks(): {response.StatusCode}");
+            }
+
+            var stringData = await response.Content.ReadAsStringAsync();
             try
             {
-                await setToken();
-                response = await httpClient.GetAsync("api/library/availaibleBooks");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"{response.StatusCode}");
-                }
-
-                var stringData = response.Content.ReadAsStringAsync().Result;
                 IEnumerable<BookDTO> data = JsonConvert.DeserializeObject<IEnumerable<BookDTO>>(stringData);
                 return data;
             }
-            catch (Exception e)
+            catch (JsonSerializationException exception)
             {
-                //Log Exception
-                return null;
+                throw new JsonSerializationException(className + "/GetAvailaibleBooks(): Error occured in Json Deserialization", exception);
             }
 
         }
 
         public async Task<bool> ReturnBook(int bookId, int userId)
         {
-            try
+            if (bookId == 0)
             {
-                await setToken();
-                var response = await httpClient.GetAsync($"api/library/return/{bookId}/{userId}");
+                throw new ArgumentNullException(className + "/ReturnBook(): The bookId object parameter is null");
+            }
+            else if (userId == 0)
+            {
+                throw new ArgumentNullException(className + "/ReturnBook(): The userId object parameter is null");
+            }
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"{response.StatusCode}");
-                }
-                return true;
-            }
-            catch (Exception e)
+            await setToken();
+            var response = await httpClient.GetAsync($"api/library/return/{bookId}/{userId}");
+
+            if (!response.IsSuccessStatusCode)
             {
-                //Log Exception
-                return false;
+                throw new Exception(className + $"/ReturnBook(): {response.StatusCode}");
             }
+            return true;
         }
     }
 }

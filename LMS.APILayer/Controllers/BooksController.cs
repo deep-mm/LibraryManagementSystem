@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using LMS.APILayer.Services;
 using LMS.BusinessLogic.Services;
 using LMS.DataAccessLayer.DatabaseContext;
 using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,8 @@ namespace LMS.APILayer.Controllers
     public class BooksController : Controller
     {
         private readonly BooksBusinessLogic booksBusinessLogic;
+        private ApplicationInsightsTracking applicationInsightsTracking;
+        private string className = "BooksController";
 
         public IConfiguration Configuration { get; }
 
@@ -31,6 +35,7 @@ namespace LMS.APILayer.Controllers
             BlobRepository blobRepository = new BlobRepository(readDBContext, mapper, configuration);
             this.booksBusinessLogic = new BooksBusinessLogic(bookRepository,blobRepository);
             Configuration = configuration;
+            applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         //GET: api/books
@@ -40,11 +45,18 @@ namespace LMS.APILayer.Controllers
             try
             {
                 IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName("");
-                return Ok(books);
+                if (books != null)
+                {
+                    return Ok(books);
+                }
+                else
+                {
+                    throw new Exception(className + "/GetAllBooks(): Books list returned as null from DataAccessLayer");
+                }
             }
             catch(Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -56,11 +68,18 @@ namespace LMS.APILayer.Controllers
             try
             {
                 IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName(search);
-                return Ok(books);
+                if (books != null)
+                {
+                    return Ok(books);
+                }
+                else
+                {
+                    throw new Exception(className + "/GetBookByName(): Books list returned as null from DataAccessLayer");
+                }
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -77,11 +96,11 @@ namespace LMS.APILayer.Controllers
                     return Ok(book);
 
                 else
-                    return NotFound();
+                    throw new Exception(className + "/GetBookById(): Book returned as null from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
             }
         }
@@ -98,14 +117,15 @@ namespace LMS.APILayer.Controllers
                     return BadRequest(ModelState);
                 }
                 bool status = await booksBusinessLogic.AddNewBook(book, libraryId);
+
                 if (status == true)
                     return Ok(HttpStatusCode.Created);
                 else
-                    return BadRequest("Error occured while adding a new book");
+                    throw new Exception(className + "/AddNewBook(): Status returned as false from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while adding a new book");
             }
         }
@@ -126,11 +146,11 @@ namespace LMS.APILayer.Controllers
                 if (status == true)
                     return Ok(HttpStatusCode.Created);
                 else
-                    return BadRequest("Error occured while updating the book");
+                    throw new Exception(className + "/PutBook(): Status returned as false from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while updating the book");
             }
         }
@@ -151,11 +171,11 @@ namespace LMS.APILayer.Controllers
                 if (status == true)
                     return Ok();
                 else
-                    return BadRequest("Error occured while deleting the book");
+                    throw new Exception(className + "/DeleteBook(): Status returned as false from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while deleting the book");
             }
         }
@@ -175,11 +195,11 @@ namespace LMS.APILayer.Controllers
                 if (uri!=null)
                     return Ok(uri);
                 else
-                    return BadRequest("Error occured while uploading image");
+                    throw new Exception(className + "/UploadPhotoAsync(): uri returned as null from DataAccessLayer");
             }
             catch (Exception e)
             {
-                //TODO: Log Exception in ILogger,File,Application Insights
+                applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while uploading image");
             }
             
