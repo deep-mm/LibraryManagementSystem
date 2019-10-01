@@ -41,9 +41,9 @@ namespace LMS.BusinessLogic.Services
         }
 
         // Get all the availaible Books
-        public async Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks()
+        public async Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks(string bookName)
         {
-            return await libraryRepository.GetAllAvailaibleBooks();
+            return await libraryRepository.GetAllAvailaibleBooks(bookName);
         }
 
         // Checkout a book from the library

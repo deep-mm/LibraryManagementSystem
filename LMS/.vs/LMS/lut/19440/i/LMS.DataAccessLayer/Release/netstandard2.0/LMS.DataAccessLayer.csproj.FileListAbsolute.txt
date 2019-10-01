@@ -1,0 +1,8 @@
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.deps.json
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.csprojAssemblyReference.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.AssemblyInfoInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.AssemblyInfo.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.csproj.CopyComplete
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.DataAccessLayer\Release\netstandard2.0\LMS.DataAccessLayer.dll

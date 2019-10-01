@@ -74,11 +74,11 @@ namespace LMS.DataAccessLayer.Repositories
         /*
          * Get all books with availaibility status as true: await GetAllAvailaibleBooks()
          */
-        public async Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks()
+        public async Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks(string bookName)
         {
             IEnumerable<Book> books = from book in readDBContext.books
                                       join bla in readDBContext.bookLibraryAssociations on book.bookId equals bla.bookId
-                                      where bla.isAvailable == true
+                                      where bla.isAvailable == true && (book.title.StartsWith(bookName) || string.IsNullOrEmpty(bookName))
                                       select book;
 
             if (books != null)
@@ -210,7 +210,20 @@ namespace LMS.DataAccessLayer.Repositories
 
             if (locations != null)
             {
-                return mapper.Map<IEnumerable<LocationDTO>>(locations);
+                IEnumerable<LocationDTO> locationDTOs = mapper.Map<IEnumerable<LocationDTO>>(locations);
+                foreach (var location in locationDTOs)
+                {
+                    IEnumerable<LibraryDTO> libraries = await GetLibrariesByLocation(location.locationId);
+                    if (libraries != null && libraries.Count()>0)
+                    {
+                        location.libraryId = libraries.ToList()[0].libraryId;
+                    }
+                    else if(libraries == null)
+                    {
+                        throw new NullReferenceException(className + "/GetAllLocations(): libraries array returned as null from the dataAcessLayer");
+                    }
+                }
+                return locationDTOs;
             }
             else
             {

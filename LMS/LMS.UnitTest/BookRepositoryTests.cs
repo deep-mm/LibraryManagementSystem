@@ -1,4 +1,4 @@
-using LMS.DataAccessLayer.Repositories;
+/*using LMS.DataAccessLayer.Repositories;
 using System;
 using Xunit;
 
@@ -19,3 +19,4 @@ namespace LMS.UnitTest
         }
     }
 }
+*/

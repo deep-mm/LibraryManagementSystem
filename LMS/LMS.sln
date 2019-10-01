@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.DataAccessLayer", "..\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.SharedFiles", "LM.SharedFiles\LMS.SharedFiles.csproj", "{5C0B4BC1-AA56-471D-8653-F035616DAB93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.UnitTest", "LMS.UnitTest\LMS.UnitTest.csproj", "{194A009B-1474-4F27-9211-BE4A40EA503E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.UnitTest", "LMS.UnitTest\LMS.UnitTest.csproj", "{194A009B-1474-4F27-9211-BE4A40EA503E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

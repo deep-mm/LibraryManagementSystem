@@ -35,7 +35,14 @@ namespace LMS.MVC.Controllers
         {
             try
             {
-                IEnumerable<BookDTO> allBooks = await libraryRepository.GetAvailaibleBooks();
+                IEnumerable<BookDTO> allBooks;
+                string searchTerm = HttpContext.Session.GetString("Search");
+                if (searchTerm != null)
+                    allBooks = await libraryRepository.GetAvailaibleBooks(searchTerm);
+                else
+                    allBooks = await libraryRepository.GetAvailaibleBooks("");
+
+
                 if (allBooks != null)
                     return View(allBooks);
                 else
@@ -73,6 +80,7 @@ namespace LMS.MVC.Controllers
             try
             {
                 string email = HttpContext.Session.GetString("userEmail");
+                IEnumerable<LocationDTO> locations = await libraryRepository.GetAllLocations();
                 if (email != null)
                 {
                     UserDTO user = await userRepository.GetUserByName(email);
@@ -80,8 +88,20 @@ namespace LMS.MVC.Controllers
                     {
                         int userId = user.userId;
                         IEnumerable<BookOrdersDTO> bookOrdersDTOs = await userRepository.GetBookHistory(userId);
-                        if(bookOrdersDTOs!=null)
-                            return View(bookOrdersDTOs);
+                        if (bookOrdersDTOs != null)
+                        {
+                            IEnumerable<BookHistoryDTO> bookHistoryDTOs = new List<BookHistoryDTO>();
+                            foreach (var book in bookOrdersDTOs)
+                            {
+                                BookHistoryDTO bookHistoryDTO = new BookHistoryDTO();
+                                bookHistoryDTO.BookName = book.BookName;
+                                bookHistoryDTO.userBookAssociationId = book.userBookAssociationId;
+                                bookHistoryDTO.DueDate = book.DueDate;
+                                bookHistoryDTO.LibraryName = locations.Where(l => l.locationId == (book.LibraryId-1)).FirstOrDefault().locationName;
+                                bookHistoryDTOs = bookHistoryDTOs.Concat(new[] { bookHistoryDTO });
+                            }
+                            return View(bookHistoryDTOs);
+                        }
                         else
                             throw new NullReferenceException(className + "/History(): bookOrderDTOs object array returned as null from userRepository");
                     }

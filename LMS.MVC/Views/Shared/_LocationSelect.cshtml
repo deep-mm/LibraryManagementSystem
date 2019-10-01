@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<form method="post" asp-action="ChangeLocation" asp-controller="Home">
+
+    <div style="float:right; padding:15px">
+
+        @if (@HttpContextAccessor.HttpContext.Session.GetInt32("locationId") == null)
+        {
+            <select name="locationId" asp-items="@Html.GetEnumSelectList<LMS.SharedFiles.DTOs.Locations>()" id="selectElement"></select>
+        }
+        else
+        {
+            <select name="locationId" asp-items="@Html.GetEnumSelectList<LMS.SharedFiles.DTOs.Locations>()" id="selectElement"></select>
+            <script>
+                document.getElementById('selectElement').selectedIndex = @HttpContextAccessor.HttpContext.Session.GetInt32("locationId");
+            </script>
+        }
+        <input type="submit" value="Change Location" class="btn btn-sm"/>
+    </div>
+   
+</form>

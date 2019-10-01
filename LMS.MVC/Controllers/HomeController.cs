@@ -17,18 +17,22 @@ namespace LMS.MVC.Controllers
     using Microsoft.Extensions.Configuration;
     using LMS.SharedFiles;
     using LMS.MVC.Helper;
+    using Microsoft.Rest.Azure;
+    using System.Collections;
 
     public class HomeController : Controller
     {
         private readonly BookRepository bookRepository;
         private readonly UserRepository userRepository;
+        private readonly LibraryRepository libraryRepository;
         private ApplicationInsightsTracking applicationInsightsTracking;
         private string className = "HomeController";
 
-        public HomeController(BookRepository bookRepository, UserRepository userRepository)
+        public HomeController(BookRepository bookRepository, UserRepository userRepository, LibraryRepository libraryRepository)
         {
             this.bookRepository = bookRepository;
             this.userRepository = userRepository;
+            this.libraryRepository = libraryRepository;
             applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
@@ -71,13 +75,21 @@ namespace LMS.MVC.Controllers
                     else
                     {
                         HttpContext.Session.SetString("userEmail", "");
-                        return View(await bookRepository.GetBooks(""));
+                        string searchTerm = HttpContext.Session.GetString("Search");
+                        if (searchTerm != null)
+                            return View(await bookRepository.GetBooks(searchTerm));
+                        else
+                            return View(await bookRepository.GetBooks(""));
                     }
                 }
                 else
                 {
                     HttpContext.Session.SetString("userEmail", "");
-                    return View(await bookRepository.GetBooks(""));
+                    string searchTerm = HttpContext.Session.GetString("Search");
+                    if (searchTerm != null)
+                        return View(await bookRepository.GetBooks(searchTerm));
+                    else
+                        return View(await bookRepository.GetBooks(""));
                 }
             }
             catch(Exception e)
@@ -108,9 +120,34 @@ namespace LMS.MVC.Controllers
         {
             try
             {
-                ViewData["Message"] = "Your application description page.";
+                ViewData["Message"] = "MS Library";
 
                 return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeLocation(string locationId)
+        {
+            try
+            {
+                if (locationId != null)
+                {
+                    IEnumerable<LibraryDTO> libraryDTOs = await libraryRepository.GetLibrariesByLocation(int.Parse(locationId)+1);
+                    LibraryDTO libraryDTO = libraryDTOs.FirstOrDefault();
+                    HttpContext.Session.SetInt32("locationId", int.Parse(locationId));
+                    HttpContext.Session.SetInt32("libraryId", libraryDTO.libraryId);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/ChangeLocation(): locationId received is null");
+                }
             }
             catch (Exception e)
             {
@@ -123,7 +160,7 @@ namespace LMS.MVC.Controllers
         {
             try
             {
-                ViewData["Message"] = "Your contact page.";
+                ViewData["Message"] = "MS Library Contact Page";
 
                 return View();
             }
@@ -145,6 +182,17 @@ namespace LMS.MVC.Controllers
                 applicationInsightsTracking.TrackException(e);
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        [HttpPost]
+        public IActionResult SearchBook(string searchTerm)
+        {
+            if(searchTerm!=null)
+                HttpContext.Session.SetString("Search", searchTerm);
+            else
+                HttpContext.Session.SetString("Search", "");
+
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]

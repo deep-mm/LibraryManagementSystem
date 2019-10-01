@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<LMS.SharedFiles.DTOs.BookOrdersDTO>
+@model IEnumerable<LMS.SharedFiles.DTOs.BookHistoryDTO>
 @{
     ViewData["Title"] = "History";
 }
@@ -13,7 +13,7 @@
                 Book Name
             </th>
             <th>
-                Library ID
+                Library Name
             </th>
             <th>
                 Due Date
@@ -29,7 +29,7 @@
                     @item.BookName
                 </td>
                 <td>
-                    @item.LibraryId
+                    @item.LibraryName
                 </td>
                 <td>
                     @item.DueDate

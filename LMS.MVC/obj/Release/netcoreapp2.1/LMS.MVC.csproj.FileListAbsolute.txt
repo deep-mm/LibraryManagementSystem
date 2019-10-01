@@ -43,3 +43,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Release\netcoreapp2.1\Raz
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Release\netcoreapp2.1\Razor\Views\Shared\_UserAccessPartial.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\bin\Release\netcoreapp2.1\LMS.SharedFiles.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\bin\Release\netcoreapp2.1\LMS.SharedFiles.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Release\netcoreapp2.1\Razor\Views\Shared\_LocationSelect.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Release\netcoreapp2.1\Razor\Views\Shared\_SearchBarPartial.g.cshtml.cs

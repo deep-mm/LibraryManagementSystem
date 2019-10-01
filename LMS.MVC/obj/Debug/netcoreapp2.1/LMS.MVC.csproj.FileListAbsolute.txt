@@ -43,3 +43,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.M
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.csproj.CopyComplete
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_LocationSelect.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_SearchBarPartial.g.cshtml.cs

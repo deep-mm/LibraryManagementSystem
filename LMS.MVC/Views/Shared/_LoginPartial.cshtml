@@ -3,13 +3,12 @@
 @if (User.Identity.IsAuthenticated)
 {
     <ul class="nav navbar-nav navbar-right">
-        <li class="navbar-text">Hello @User.Identity.Name!</li>
-        <li><a asp-area="AzureAD" asp-controller="Account" asp-action="SignOut" class="glyphicon glyphicon-log-out">   Sign-out</a></li>
+        <li><a asp-area="AzureAD" asp-controller="Account" asp-action="SignOut" class="glyphicon glyphicon-log-out" style="float: right">   Sign-out</a></li>
     </ul>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="AzureAD" asp-controller="Account" asp-action="SignIn" class="glyphicon glyphicon-log-in" >     Sign-in</a></li>
+        <li><a asp-area="AzureAD" asp-controller="Account" asp-action="SignIn" class="glyphicon glyphicon-log-in" style="float: right">     Sign-in</a></li>
     </ul>
 }

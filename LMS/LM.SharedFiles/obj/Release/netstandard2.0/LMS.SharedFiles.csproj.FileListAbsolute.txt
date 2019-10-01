@@ -10,3 +10,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netsta
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csproj.CopyComplete
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.xml

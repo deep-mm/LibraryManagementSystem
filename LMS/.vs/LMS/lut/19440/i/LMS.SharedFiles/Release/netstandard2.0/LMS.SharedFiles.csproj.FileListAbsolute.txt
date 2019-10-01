@@ -1,0 +1,7 @@
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.deps.json
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.csproj.CoreCompileInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfoInputs.cache
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfo.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.csproj.CopyComplete
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.SharedFiles\Release\netstandard2.0\LMS.SharedFiles.dll

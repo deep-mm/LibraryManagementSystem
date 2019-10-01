@@ -28,18 +28,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <img src="~/images/logo.png" style="max-width: 30px; max-height: 30px; margin: 10px" class="navbar-left"/>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Microsoft Library</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About"><i class="glyphicon glyphicon-info-sign"></i>   About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact"><i class="glyphicon glyphicon-phone"></i>     Contact</a></li>
                     <partial name="_UserAccessPartial" />
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
+    <partial name="_LocationSelect" />
 
     <partial name="_CookieConsentPartial" />
 

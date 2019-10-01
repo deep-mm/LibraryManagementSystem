@@ -25,7 +25,7 @@ namespace LMS.DataAccessLayer.Repositories
         Task<IEnumerable<LibraryDTO>> GetLibrariesByLocation(int locationId);
 
         // Get all the availaible Books
-        Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks();
+        Task<IEnumerable<BookDTO>> GetAllAvailaibleBooks(string bookName);
 
         // Checkout a book from the library
         Task<bool> CheckoutBook(int bookId, int userId);

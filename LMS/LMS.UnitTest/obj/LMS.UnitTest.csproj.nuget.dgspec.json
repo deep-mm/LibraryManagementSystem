@@ -504,13 +504,17 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
-            "AutoMoq": {
-              "target": "Package",
-              "version": "[2.0.0, )"
-            },
             "EntityFrameworkTesting.Moq": {
               "target": "Package",
               "version": "[1.2.3, )"
+            },
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.0.0, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -528,16 +532,6 @@
             "Moq.AutoMock": {
               "target": "Package",
               "version": "[1.2.0.122-pre, )"
-            },
-            "xunit": {
-              "target": "Package",
-              "version": "[2.4.1, )"
-            },
-            "xunit.runner.visualstudio": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[2.4.1, )"
             }
           },
           "imports": [

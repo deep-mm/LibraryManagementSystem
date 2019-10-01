@@ -4,7 +4,7 @@
 {
     if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
     {
-        <li><a asp-area="AzureAD" asp-controller="Student" asp-action="History">Order History</a></li>
+        <li><a asp-area="AzureAD" asp-controller="Student" asp-action="History"><i class="glyphicon glyphicon-time"></i>   Order History</a></li>
     }
     else if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Librarian"))
     {
@@ -13,5 +13,5 @@
     else
     {
 
-    }
+    } 
 }

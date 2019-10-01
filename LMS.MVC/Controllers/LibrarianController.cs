@@ -10,6 +10,7 @@ using LMS.MVC.Models;
 using LMS.MVC.Services;
 using LMS.SharedFiles.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.MVC.Controllers
@@ -33,7 +34,13 @@ namespace LMS.MVC.Controllers
         {
             try
             {
-                IEnumerable<BookDTO> books = await bookRepository.GetBooks("");
+                IEnumerable<BookDTO> books;
+                string searchTerm = HttpContext.Session.GetString("Search");
+                if (searchTerm != null)
+                    books = await bookRepository.GetBooks(searchTerm);
+                else
+                    books = await bookRepository.GetBooks("");
+
                 if (books != null)
                 {
                     return View(books);
@@ -71,7 +78,13 @@ namespace LMS.MVC.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        bool status = await bookRepository.AddBook(book, 2); //TODO: Update libraryId
+                        bool status = false;
+                        var libraryId = HttpContext.Session.GetInt32("libraryId");
+                        if (libraryId!=0)
+                            status = await bookRepository.AddBook(book, libraryId.Value);
+                        else
+                            status = await bookRepository.AddBook(book, 2);
+
                         if (status == true)
                             return RedirectToAction(nameof(Index));
                         else

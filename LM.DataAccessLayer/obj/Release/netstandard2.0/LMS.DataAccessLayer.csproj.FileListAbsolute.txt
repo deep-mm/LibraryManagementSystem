@@ -12,3 +12,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\obj\Release\netsta
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\obj\Release\netstandard2.0\LMS.DataAccessLayer.csproj.CopyComplete
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\obj\Release\netstandard2.0\LMS.DataAccessLayer.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\obj\Release\netstandard2.0\LMS.DataAccessLayer.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.DataAccessLayer\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.xml

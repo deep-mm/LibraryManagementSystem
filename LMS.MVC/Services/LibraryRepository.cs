@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -66,10 +67,13 @@ namespace LMS.MVC.Services
             }
         }
 
-        public async Task<IEnumerable<BookDTO>> GetAvailaibleBooks()
+        public async Task<IEnumerable<BookDTO>> GetAvailaibleBooks(string bookName)
         {
             await setToken();
-            response = await httpClient.GetAsync("api/library/availaibleBooks");
+            if(bookName.Equals(""))
+                response = await httpClient.GetAsync($"api/library/availaibleBooks");
+            else
+                response = await httpClient.GetAsync($"api/library/availaibleBooks/{bookName}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -108,6 +112,48 @@ namespace LMS.MVC.Services
                 throw new Exception(className + $"/ReturnBook(): {response.StatusCode}");
             }
             return true;
+        }
+
+        public async Task<IEnumerable<LocationDTO>> GetAllLocations()
+        {
+            await setToken();
+            var response = await httpClient.GetAsync($"api/library/allLocations");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(className + $"/GetAllLocations(): {response.StatusCode}");
+            }
+
+            var stringData = await response.Content.ReadAsStringAsync();
+            try
+            {
+                IEnumerable<LocationDTO> data = JsonConvert.DeserializeObject<IEnumerable<LocationDTO>>(stringData);
+                return data;
+            }
+            catch (JsonSerializationException exception)
+            {
+                throw new JsonSerializationException(className + "/GetAllLocations(): Error occured in Json Deserialization", exception);
+            }
+        }
+
+        public async Task<IEnumerable<LibraryDTO>> GetLibrariesByLocation(int locationId)
+        {
+            await setToken();
+            var response = await httpClient.GetAsync($"api/library/getLibrariesByLocation/{locationId.ToString()}");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(className + $"/GetLibrariesByLocation(): {response.StatusCode}");
+            }
+
+            var stringData = await response.Content.ReadAsStringAsync();
+            try
+            {
+                IEnumerable<LibraryDTO> data = JsonConvert.DeserializeObject<IEnumerable<LibraryDTO>>(stringData);
+                return data;
+            }
+            catch (JsonSerializationException exception)
+            {
+                throw new JsonSerializationException(className + "/GetLibrariesByLocation(): Error occured in Json Deserialization", exception);
+            }
         }
     }
 }

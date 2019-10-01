@@ -9,6 +9,8 @@ namespace LMS.SharedFiles.DTOs
     {
         public int locationId { get; set; }
 
+        public int libraryId { get; set; }
+
         public string locationName { get; set; }
     }
 }

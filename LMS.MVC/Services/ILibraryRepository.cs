@@ -8,7 +8,7 @@ namespace LMS.MVC.Services
 {
     public interface ILibraryRepository
     {
-        Task<IEnumerable<BookDTO>> GetAvailaibleBooks();
+        Task<IEnumerable<BookDTO>> GetAvailaibleBooks(string bookName);
 
         Task<bool> CheckoutBook(int bookId, int userId);
 
