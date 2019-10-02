@@ -63,7 +63,7 @@ using LMS.MVC.Models;
             WriteLiteral("\r\n    <div class=\"center-block\">\r\n        <h1 class=\"text-danger\">Oops... Something went wrong</h1>\r\n        <h2 class=\"text-danger\">An error occurred while processing your request.</h2>\r\n\r\n        ");
             EndContext();
             BeginContext(262, 116, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "75cbc7fad9ff4023a1eadb5e680a503a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8db4f3c52d264e639c37594706a4db70", async() => {
                 BeginContext(355, 19, true);
                 WriteLiteral("Return to Home Page");
                 EndContext();

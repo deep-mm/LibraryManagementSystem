@@ -5,7 +5,7 @@ using System.Linq;
 namespace LMS.DataAccessLayer.DatabaseContext
 {
     public class ReadDBContext: DbContext
-    {
+    { 
         public ReadDBContext(DbContextOptions<ReadDBContext> options)
             : base(options)
         {

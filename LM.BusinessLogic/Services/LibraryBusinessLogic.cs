@@ -1,19 +1,22 @@
 ﻿using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LMS.BusinessLogic.Services
 {
-    public class LibraryBusinessLogic
+    public class LibraryBusinessLogic : ILibraryBusinessLogic
     {
         private readonly ILibraryRepository libraryRepository;
+        private readonly IDiscussionRepository discussionRepository;
 
-        public LibraryBusinessLogic(ILibraryRepository libraryRepository)
+        public LibraryBusinessLogic(ILibraryRepository libraryRepository,IDiscussionRepository discussionRepository)
         {
             this.libraryRepository = libraryRepository;
+            this.discussionRepository = discussionRepository;
         }
 
         // Get all the libraries in the database
@@ -56,6 +59,16 @@ namespace LMS.BusinessLogic.Services
         public async Task<bool> ReturnBook(int bookId, int userId)
         {
             return await libraryRepository.ReturnBook(bookId, userId);
+        }
+
+        public async Task<bool> AddNewPost(PostDTO post)
+        {
+            return await discussionRepository.AddNewPost(post);
+        }
+
+        public async Task<IEnumerable<PostDTO>> GetAllPosts()
+        {
+            return await discussionRepository.GetAllPosts();
         }
     }
 }

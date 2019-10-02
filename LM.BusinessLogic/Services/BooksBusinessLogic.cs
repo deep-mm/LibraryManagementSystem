@@ -8,7 +8,7 @@ namespace LMS.BusinessLogic.Services
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class BooksBusinessLogic
+    public class BooksBusinessLogic : IBooksBusinessLogic
     {
         private readonly IBookRepository bookRepository;
         private readonly IBlobRepository blobRepository;
@@ -19,10 +19,10 @@ namespace LMS.BusinessLogic.Services
             this.blobRepository = blobRepository;
         }
 
-        public async Task<IEnumerable<BookDTO>> GetBookByName(string bookName)
+        public async Task<IEnumerable<BookDTO>> GetBookByName(string bookName, int libraryId)
         {
-                IEnumerable<BookDTO> bookDTOs = await bookRepository.GetBookByName(bookName);
-                return bookDTOs;
+            IEnumerable<BookDTO> bookDTOs = await bookRepository.GetBookByName(bookName, libraryId);
+            return bookDTOs;
         }
 
         // To Add a new book object to the database

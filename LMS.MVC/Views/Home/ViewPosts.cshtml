@@ -1,0 +1,26 @@
+﻿@model IEnumerable<LMS.SharedFiles.DTOs.PostDTO>
+
+@{
+    ViewData["Title"] = "Discussion Forum";
+}
+
+<h2>Discussion Forum</h2>
+<a asp-action="CreatePost" class="glyphicon glyphicon-plus">     New-Post</a>
+<br />
+<br />
+
+<partial name="_AzureSearchBarPartial" />
+
+<br />
+        @foreach (var item in Model)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Email:  @item.username | Role: @item.role | @item.postId
+                </div>
+                
+                <div class="panel-body">
+                    @item.text
+                </div>
+            </div>
+        }

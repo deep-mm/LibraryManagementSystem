@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using LMS.MVC.Helper;
 using LMS.SharedFiles.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -19,10 +20,12 @@ namespace LMS.MVC.Services
         private HttpResponseMessage response;
         private string className = "BookRepository";
         private ApplicationInsightsTracking applicationInsightsTracking;
+        private IHttpContextAccessor httpContextAccessor;
 
-        public BookRepository(HttpClient httpClient, IConfiguration configuration)
+        public BookRepository(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.httpContextAccessor = httpContextAccessor;
             this.helper = new Helper.Helper(configuration);
             this.httpClient.BaseAddress = new Uri(configuration["Api:BaseUrl"]);
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -150,11 +153,21 @@ namespace LMS.MVC.Services
             if (searchTerm != null)
             {
                 await setToken();
-                if (searchTerm.Equals(""))
-                    response = await httpClient.GetAsync($"api/books");
+                var libraryId = httpContextAccessor.HttpContext.Session.GetInt32("libraryId");
+                if (libraryId != null)
+                {
+                    if (searchTerm.Equals(""))
+                        response = await httpClient.GetAsync($"api/books/{libraryId.ToString()}");
+                    else
+                        response = await httpClient.GetAsync($"api/books/name/{searchTerm}/{libraryId.ToString()}");
+                }
                 else
-                    response = await httpClient.GetAsync($"api/books/name/{searchTerm}");
-
+                {
+                    if (searchTerm.Equals(""))
+                        response = await httpClient.GetAsync($"api/books/{"2"}");
+                    else
+                        response = await httpClient.GetAsync($"api/books/name/{searchTerm}/{"2"}");
+                }
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(className + $"/GetBooks(): {response.StatusCode}");

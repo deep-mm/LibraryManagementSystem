@@ -23,7 +23,7 @@ namespace LMS.Functions
 
             int bookId = int.Parse(metadata["bookId"]);
             Book book = new Book();
-            book.PartitionKey = metadata["genre"];
+            book.PartitionKey = "bookImages";
             book.RowKey = bookId.ToString();
             book.bookId = bookId;
             book.bookName = metadata["bookName"];
@@ -35,7 +35,7 @@ namespace LMS.Functions
             }
             catch (Exception e)
             {
-                //Track Exception
+                log.LogInformation($"Exception occured: {e.StackTrace}");
             }
             log.LogInformation($"C# Blob trigger function Processed blob\n Id: {book.bookId} \n Name : {book.bookName}");
         }

@@ -25,6 +25,7 @@ namespace LMS.APILayer
     using Swashbuckle.AspNetCore.Swagger;
     using System.Collections;
     using LMS.SharedFiles;
+    using LMS.BusinessLogic.Services;
 
     public class Startup
     {
@@ -67,21 +68,21 @@ namespace LMS.APILayer
 
             services.AddMvc();
 
-            services.AddSwaggerGen( c =>
-                {
-                c.SwaggerDoc("v2", new Info { Title = "LMSApiServices", Version = "v2" });
-                    c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
-                    {
-                        Description = "Jwt Authorisation Header {token}",
-                        Name = "Authorization",
-                        In = "Header",
-                        Type = "apiKey"
-                    });
-                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                    {
+            services.AddSwaggerGen(c =>
+               {
+                   c.SwaggerDoc("v2", new Info { Title = "LMSApiServices", Version = "v2" });
+                   c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                   {
+                       Description = "Jwt Authorisation Header {token}",
+                       Name = "Authorization",
+                       In = "Header",
+                       Type = "apiKey"
+                   });
+                   c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                   {
                         {"Bearer", new string[] { } }
-                    });
-            });
+                   });
+               });
 
             //AutoMapper Configurations
             var config = new MapperConfiguration(cfg =>
@@ -90,6 +91,21 @@ namespace LMS.APILayer
 
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = Configuration["RedisConnection"];
+                option.InstanceName = "master";
+            });
+
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBlobRepository, BlobRepository>();
+            services.AddScoped<IBooksBusinessLogic, BooksBusinessLogic>();
+            services.AddScoped<ILibraryBusinessLogic, LibraryBusinessLogic>();
+            services.AddScoped<IUserBusinessLogic, UserBusinessLogic>();
+            services.AddScoped<IDiscussionRepository, DiscussionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +124,7 @@ namespace LMS.APILayer
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

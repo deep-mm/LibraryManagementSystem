@@ -22,15 +22,14 @@ namespace LMS.APILayer.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly UserBusinessLogic userBusinessLogic;
+        private readonly IUserBusinessLogic userBusinessLogic;
         private ApplicationInsightsTracking applicationInsightsTracking;
         private string className = "UserController";
 
-        public UserController(ReadDBContext readDBContext, IMapper mapper)
+        public UserController(IUserBusinessLogic userBusinessLogic)
         {
-            UserRepository userRepository = new UserRepository(readDBContext, mapper);
-            this.userBusinessLogic = new UserBusinessLogic(userRepository);
             applicationInsightsTracking = new ApplicationInsightsTracking();
+            this.userBusinessLogic = userBusinessLogic;
         }
 
         // GET: api/users/id/1

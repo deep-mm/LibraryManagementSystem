@@ -19,6 +19,7 @@ namespace LMS.MVC.Controllers
     using LMS.MVC.Helper;
     using Microsoft.Rest.Azure;
     using System.Collections;
+    using Microsoft.Azure.KeyVault.Models;
 
     public class HomeController : Controller
     {
@@ -193,6 +194,73 @@ namespace LMS.MVC.Controllers
                 HttpContext.Session.SetString("Search", "");
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewPosts()
+        {
+            try
+            {
+                return View(await libraryRepository.GetPosts());
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult CreatePost()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [Authorize]
+        [HttpPost, ActionName("CreatePost")]
+        public async Task<IActionResult> CreatePost(PostDTO postDTO)
+        {
+            try
+            {
+                if (postDTO != null)
+                {
+                    PostDTO post = new PostDTO();
+                    post.id = $"{DateTime.UtcNow}{Guid.NewGuid()}";
+                    post.postId = $"{DateTime.UtcNow}";
+                    post.text = postDTO.text;
+                    post.type = "Post";
+                    post.username = HttpContext.Session.GetString("userEmail");
+                    if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
+                        post.role = "Student";
+                    else
+                        post.role = "Librarian";
+
+                    bool status = await libraryRepository.AddPost(post);
+                    if (status == true)
+                        return RedirectToAction("ViewPosts", "Home");
+                    else
+                        throw new Exception(className + "/CreatePost(): Status returned from the libraryRepository layer is false");
+                }
+                else
+                {
+                    throw new Exception(className + "/CreatePost(): The postDTO object paramter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return RedirectToAction("Error", "Home");
+            }
+
         }
 
         [AllowAnonymous]

@@ -6,11 +6,13 @@ using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LMS.APILayer.Controllers
@@ -19,15 +21,16 @@ namespace LMS.APILayer.Controllers
     [ApiController]
     public class LibraryController : Controller
     {
-        private readonly LibraryBusinessLogic libraryBusinessLogic;
+        private readonly ILibraryBusinessLogic libraryBusinessLogic;
+        private readonly IDiscussionRepository discussionRepository;
         private ApplicationInsightsTracking applicationInsightsTracking;
         private string className = "LibraryController";
 
-        public LibraryController(ReadDBContext readDBContext, IMapper mapper)
+        public LibraryController(ILibraryBusinessLogic libraryBusinessLogic, IDiscussionRepository discussionRepository)
         {
-            LibraryRepository libraryRepository = new LibraryRepository(readDBContext, mapper);
-            this.libraryBusinessLogic = new LibraryBusinessLogic(libraryRepository);
             applicationInsightsTracking = new ApplicationInsightsTracking();
+            this.libraryBusinessLogic = libraryBusinessLogic;
+            this.discussionRepository = discussionRepository;
         }
 
         public IConfiguration Configuration { get; }
@@ -163,6 +166,51 @@ namespace LMS.APILayer.Controllers
             {
                 applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while getting all locations from the database");
+            }
+        }
+
+        [Authorize]
+        [HttpGet("getPosts")]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            try
+            {
+                IEnumerable<PostDTO> postDTOs = await libraryBusinessLogic.GetAllPosts();
+                if (postDTOs != null)
+                    return Ok(postDTOs);
+                else
+                    throw new Exception(className + "/GetAllPosts(): postDTOs array returned as null from the DataAccessLayer");
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return BadRequest("Error occured while getting all posts from the database");
+            }
+        }
+
+        [Authorize]
+        [HttpPost("addPost")]
+        public async Task<IActionResult> AddNewPost([FromBody] PostDTO postDTO)
+        {
+            try
+            {
+                if (postDTO != null)
+                {
+                    bool status = await libraryBusinessLogic.AddNewPost(postDTO);
+                    if (status == true)
+                        return Ok(HttpStatusCode.Created);
+                    else
+                        throw new Exception(className + "/AddNewPost(): status returned as false");
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/AddNewPost(): postDTO parameter is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return BadRequest("Error occured while adding post to the database");
             }
         }
     }

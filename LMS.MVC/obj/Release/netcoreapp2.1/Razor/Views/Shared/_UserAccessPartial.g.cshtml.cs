@@ -72,7 +72,7 @@ using System.Security.Principal;
             WriteLiteral("        <li>");
             EndContext();
             BeginContext(170, 128, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cbedead3a8804e10b8312b50edf9c39c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "876e2e7b8dd04c6a9e4bb7bc5ed966e0", async() => {
                 BeginContext(238, 56, true);
                 WriteLiteral("<i class=\"glyphicon glyphicon-time\"></i>   Order History");
                 EndContext();

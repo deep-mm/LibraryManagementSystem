@@ -155,5 +155,45 @@ namespace LMS.MVC.Services
                 throw new JsonSerializationException(className + "/GetLibrariesByLocation(): Error occured in Json Deserialization", exception);
             }
         }
+
+        public async Task<IEnumerable<PostDTO>> GetPosts()
+        {
+            await setToken();
+            var response = await httpClient.GetAsync($"api/library/getPosts");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(className + $"/GetPosts(): {response.StatusCode}");
+            }
+
+            var stringData = await response.Content.ReadAsStringAsync();
+            try
+            {
+                IEnumerable<PostDTO> data = JsonConvert.DeserializeObject<IEnumerable<PostDTO>>(stringData);
+                return data;
+            }
+            catch (JsonSerializationException exception)
+            {
+                throw new JsonSerializationException(className + "/GetPosts(): Error occured in Json Deserialization", exception);
+            }
+        }
+
+        public async Task<bool> AddPost(PostDTO post)
+        {
+            if (post == null)
+            {
+                throw new ArgumentNullException(className + "/AddPost(): post object parameter in null");
+            }
+            else
+            {
+                await setToken();
+                var response = await httpClient.PostAsJsonAsync($"api/library/addPost", post);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(className + $"/AddPost(): {response.StatusCode}");
+                }
+                return true;
+            }
+        }
     }
 }

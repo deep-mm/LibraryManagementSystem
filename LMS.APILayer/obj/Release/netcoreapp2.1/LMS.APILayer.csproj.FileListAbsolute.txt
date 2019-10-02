@@ -20,3 +20,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\obj\Release\netcoreapp2.
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\obj\Release\netcoreapp2.1\LMS.APILayer.csproj.CopyComplete
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\obj\Release\netcoreapp2.1\LMS.APILayer.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\obj\Release\netcoreapp2.1\LMS.APILayer.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Release\netcoreapp2.1\Microsoft.Azure.Cosmos.ServiceInterop.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Release\netcoreapp2.1\Cosmos.CRTCompat.dll

@@ -23,6 +23,8 @@ namespace LMS.DataAccessLayer.Profiles
             CreateMap<Location, LocationDTO>();
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
+            CreateMap<PostDTO, Post>();
+            CreateMap<Post, PostDTO>();
         }
     }
 }

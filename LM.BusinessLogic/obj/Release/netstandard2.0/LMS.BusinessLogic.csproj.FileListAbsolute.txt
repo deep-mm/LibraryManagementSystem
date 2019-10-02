@@ -16,3 +16,5 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Release\netstand
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\obj\Release\netstandard2.0\LMS.BusinessLogic.pdb
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.xml
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Release\netstandard2.0\Microsoft.Azure.Cosmos.ServiceInterop.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LM.BusinessLogic\bin\Release\netstandard2.0\Cosmos.CRTCompat.dll

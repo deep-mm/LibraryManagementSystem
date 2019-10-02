@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LMS.BusinessLogic.Services
 {
-    public class UserBusinessLogic
+    public class UserBusinessLogic : IUserBusinessLogic
     {
         private readonly IUserRepository userRepository;
 

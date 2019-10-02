@@ -15,19 +15,23 @@ namespace LMS.DataAccessLayer.Repositories
     using LMS.DataAccessLayer.Entities;
     using LMS.SharedFiles.DTOs;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
+    using Newtonsoft.Json;
 
     public class BookRepository : IBookRepository
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
+        private readonly IDistributedCache distributedCache;
         private string className = "BookRepository";
 
-        public BookRepository(ReadDBContext readDBContext, IMapper mapper)
+        public BookRepository(ReadDBContext readDBContext, IMapper mapper, IDistributedCache distributedCache)
         {
             this.readDBContext = readDBContext;
             this.mapper = mapper;
+            this.distributedCache = distributedCache;
         }
 
         /*
@@ -58,6 +62,7 @@ namespace LMS.DataAccessLayer.Repositories
 
                 await readDBContext.bookLibraryAssociations.AddAsync(bookLibraryAssociation); //Adding book to DB
                 await Commit();
+                await ClearCache($"Books_AllBooks_{""}");
                 return true;
             }
         }
@@ -82,6 +87,7 @@ namespace LMS.DataAccessLayer.Repositories
                             await Commit();
                             readDBContext.books.Remove(mappedBook); //Deleting a book from DB
                             await Commit();
+                            await ClearCache($"Books_AllBooks_{""}");
                             return true;
                         }
                         else
@@ -91,8 +97,8 @@ namespace LMS.DataAccessLayer.Repositories
                     {
                         readDBContext.Remove(mappedBook); //Deleting a book from DB
                         await Commit();
+                        await ClearCache($"Books_AllBooks_{""}");
                         return true;
-                        //return false;
                     }
                 }
                 else
@@ -113,7 +119,22 @@ namespace LMS.DataAccessLayer.Repositories
         {
             if (id != 0)
             {
-                Book book = await readDBContext.books.FindAsync(id);
+                Book book;
+                var cachedBook = await distributedCache.GetStringAsync($"Books_BookId_{id}");
+
+                if (cachedBook == null)
+                {
+                    book = await readDBContext.books.FindAsync(id);
+
+                    DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                    options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                    await distributedCache.SetStringAsync($"Books_BookId_{id}", JsonConvert.SerializeObject(book));
+                }
+                else
+                {
+                    book = JsonConvert.DeserializeObject<Book>(cachedBook);
+                }
                 if (book != null)
                 {
                     BookDTO mappedDTO = mapper.Map<BookDTO>(book);
@@ -135,15 +156,41 @@ namespace LMS.DataAccessLayer.Repositories
          * If bookName has a value, return list of those books starting ith that value
          * await getBookByName(Harry)
          */
-        public async Task<IEnumerable<BookDTO>> GetBookByName(string bookName)
+        public async Task<IEnumerable<BookDTO>> GetBookByName(string bookName, int libraryId)
         {
+            if (libraryId == 0)
+            {
+                throw new ArgumentNullException(className + "/GetBookByName(): The libraryId parameter received as null");
+            }
             if (bookName != null)
             {
-                var query = from b in readDBContext.books
-                            where b.title.StartsWith(bookName) || string.IsNullOrEmpty(bookName)
-                            orderby b.title
-                            select b;
-                IEnumerable<Book> books = query.AsEnumerable<Book>();
+                IEnumerable<Book> books;
+                string cachedBooks;
+                if (bookName.Equals(""))
+                    cachedBooks = await distributedCache.GetStringAsync($"Books_AllBooks_{bookName}_{libraryId}");
+                else
+                    cachedBooks = null;
+
+                if (cachedBooks == null)
+                {
+                    var query = from b in readDBContext.books
+                                join bla in readDBContext.bookLibraryAssociations on b.bookId equals bla.bookId
+                                where (b.title.StartsWith(bookName) || string.IsNullOrEmpty(bookName)) && bla.libraryId == libraryId
+                                orderby b.title
+                                select b;
+
+                    books = query.AsEnumerable<Book>();
+
+                    DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                    options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                    if(bookName.Equals(""))
+                        await distributedCache.SetStringAsync($"Books_AllBooks_{bookName}_{libraryId}", JsonConvert.SerializeObject(books));
+                }
+                else
+                {
+                    books = JsonConvert.DeserializeObject<IEnumerable<Book>>(cachedBooks);
+                }
                 if (books != null)
                 {
                     IEnumerable<BookDTO> bookDTOs = mapper.Map<IEnumerable<BookDTO>>(books);
@@ -172,6 +219,8 @@ namespace LMS.DataAccessLayer.Repositories
                 //readDBContext.Update(newBook);
                 entity.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 await Commit();
+                await ClearCache($"Books_AllBooks_{""}");
+                await ClearCache($"Books_BookId_{newBook.bookId}");
                 return true;
             }
             else
@@ -193,6 +242,11 @@ namespace LMS.DataAccessLayer.Repositories
             {
                 throw new Exception(className + "/Commit(): Error occured while commiting to database + Exception: "+e.ToString());
             }
+        }
+
+        public async Task ClearCache(string key)
+        {
+            await distributedCache.RemoveAsync(key);
         }
     }
        

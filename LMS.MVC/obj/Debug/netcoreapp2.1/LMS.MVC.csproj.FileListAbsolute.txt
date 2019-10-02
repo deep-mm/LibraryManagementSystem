@@ -29,7 +29,9 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_Layout.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_LocationSelect.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_LoginPartial.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_SearchBarPartial.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_UserAccessPartial.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_ValidationScriptsPartial.g.cshtml.cs
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Student\BookDetails.g.cshtml.cs
@@ -43,5 +45,6 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.M
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.csproj.CopyComplete
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\LMS.MVC.pdb
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_LocationSelect.g.cshtml.cs
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_SearchBarPartial.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Home\ViewPosts.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_AzureSearchBarPartial.g.cshtml.cs
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.MVC\obj\Debug\netcoreapp2.1\Razor\Views\Home\CreatePost.g.cshtml.cs

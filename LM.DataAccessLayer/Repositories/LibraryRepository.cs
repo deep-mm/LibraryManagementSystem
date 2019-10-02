@@ -16,17 +16,21 @@ namespace LMS.DataAccessLayer.Repositories
     using LMS.DataAccessLayer.DatabaseContext;
     using Microsoft.EntityFrameworkCore;
     using LMS.DataAccessLayer.Profiles;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Newtonsoft.Json;
 
     public class LibraryRepository : ILibraryRepository
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
+        private readonly IDistributedCache distributedCache;
         private string className = "LibraryRepository";
 
-        public LibraryRepository(ReadDBContext readDBContext, IMapper mapper)
+        public LibraryRepository(ReadDBContext readDBContext, IMapper mapper, IDistributedCache distributedCache)
         {
             this.readDBContext = readDBContext;
             this.mapper = mapper;
+            this.distributedCache = distributedCache;
         }
 
         /*
@@ -96,8 +100,22 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<IEnumerable<LibraryDTO>> GetAllLibraries()
         {
-            IEnumerable<Library> libraries = from library in readDBContext.libraries
-                                             select library;
+            IEnumerable<Library> libraries;
+            var cachedLibraries = await distributedCache.GetStringAsync($"Library_GetAll");
+            if (cachedLibraries == null)
+            {
+                libraries = from library in readDBContext.libraries
+                            select library;
+
+                DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                await distributedCache.SetStringAsync($"Library_GetAll", JsonConvert.SerializeObject(libraries));
+            }
+            else
+            {
+                libraries = JsonConvert.DeserializeObject<IEnumerable<Library>>(cachedLibraries);
+            }
 
             if (libraries != null)
             {
@@ -114,9 +132,23 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<IEnumerable<LibraryDTO>> GetLibrariesByLocation(int locationId)
         {
-            IEnumerable<Library> libraries = from library in readDBContext.libraries
-                                             where library.locationId == locationId
-                                             select library;
+            IEnumerable<Library> libraries;
+            var cachedLibraries = await distributedCache.GetStringAsync($"Library_GetByLocation_{locationId}");
+            if (cachedLibraries == null)
+            {
+                libraries = from library in readDBContext.libraries
+                            where library.locationId == locationId
+                            select library;
+
+                DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                await distributedCache.SetStringAsync($"Library_GetByLocation_{locationId}", JsonConvert.SerializeObject(libraries));
+            }
+            else
+            {
+                libraries = JsonConvert.DeserializeObject<IEnumerable<Library>>(cachedLibraries);
+            }
 
             if (libraries != null)
             {
@@ -136,7 +168,22 @@ namespace LMS.DataAccessLayer.Repositories
         {
             if (librarayId != 0)
             {
-                Library library = await readDBContext.libraries.FindAsync(librarayId);
+                Library library;
+                var cachedLibrary = await distributedCache.GetStringAsync($"Library_GetById_{librarayId}");
+                if (cachedLibrary == null)
+                {
+                    library = await readDBContext.libraries.FindAsync(librarayId);
+
+                    DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                    options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                    await distributedCache.SetStringAsync($"Library_GetById_{librarayId}", JsonConvert.SerializeObject(library));
+                }
+                else
+                {
+                    library = JsonConvert.DeserializeObject<Library>(cachedLibrary);
+                }
+
                 if (library != null)
                 {
                     return mapper.Map<LibraryDTO>(library);
@@ -205,8 +252,22 @@ namespace LMS.DataAccessLayer.Repositories
          */
         public async Task<IEnumerable<LocationDTO>> GetAllLocations()
         {
-            IEnumerable<Location> locations = from location in readDBContext.locations
-                                              select location;
+            IEnumerable<Location> locations;
+            var cachedLocations = await distributedCache.GetStringAsync($"Location_GetAll");
+            if (cachedLocations == null)
+            {
+                locations = from location in readDBContext.locations
+                            select location;
+
+                DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+                options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
+
+                await distributedCache.SetStringAsync($"Location_GetAll", JsonConvert.SerializeObject(locations));
+            }
+            else
+            {
+                locations = JsonConvert.DeserializeObject<IEnumerable<Location>>(cachedLocations);
+            }
 
             if (locations != null)
             {

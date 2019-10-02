@@ -1,3 +1,5 @@
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Debug\netcoreapp2.1\Microsoft.Azure.Cosmos.ServiceInterop.dll
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Debug\netcoreapp2.1\Cosmos.CRTCompat.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Debug\netcoreapp2.1\LMS.APILayer.deps.json
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Debug\netcoreapp2.1\LMS.APILayer.runtimeconfig.json
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS.APILayer\bin\Debug\netcoreapp2.1\LMS.APILayer.runtimeconfig.dev.json

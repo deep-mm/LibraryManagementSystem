@@ -4,6 +4,7 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.MVC\Release\n
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.Views.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.Views.pdb
+C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.csprojAssemblyReference.cache
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.csproj.CoreCompileInputs.cache
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.RazorAssemblyInfo.cache
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.MVC\Release\netcoreapp2.1\LMS.MVC.RazorAssemblyInfo.cs

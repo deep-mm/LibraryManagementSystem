@@ -13,5 +13,9 @@ namespace LMS.MVC.Services
         Task<bool> CheckoutBook(int bookId, int userId);
 
         Task<bool> ReturnBook(int bookId, int userId);
+
+        Task<bool> AddPost(PostDTO post);
+
+        Task<IEnumerable<PostDTO>> GetPosts();
     }
 }

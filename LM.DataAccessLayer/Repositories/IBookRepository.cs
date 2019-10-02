@@ -11,7 +11,7 @@ namespace LMS.DataAccessLayer.Repositories
     public interface IBookRepository
     {
         // To obtain list of books starting with a particular name or all books if bookName is empty
-        Task<IEnumerable<BookDTO>> GetBookByName(string bookName);
+        Task<IEnumerable<BookDTO>> GetBookByName(string bookName, int libraryId);
 
         // To Add a new book object to the database
         Task<bool> AddNewBook(BookDTO newBook, int libraryId);

@@ -14,6 +14,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 
 namespace LMS.APILayer.Controllers
@@ -22,29 +23,27 @@ namespace LMS.APILayer.Controllers
     [ApiController]
     public class BooksController : Controller
     {
-        private readonly BooksBusinessLogic booksBusinessLogic;
+        private readonly IBooksBusinessLogic booksBusinessLogic;
         private ApplicationInsightsTracking applicationInsightsTracking;
         private string className = "BooksController";
 
         public IConfiguration Configuration { get; }
 
 
-        public BooksController(ReadDBContext readDBContext, IMapper mapper, IConfiguration configuration)
+        public BooksController(IBooksBusinessLogic booksBusinessLogic, IConfiguration configuration)
         {
-            BookRepository bookRepository = new BookRepository(readDBContext, mapper);
-            BlobRepository blobRepository = new BlobRepository(readDBContext, mapper, configuration);
-            this.booksBusinessLogic = new BooksBusinessLogic(bookRepository,blobRepository);
+            this.booksBusinessLogic = booksBusinessLogic;
             Configuration = configuration;
             applicationInsightsTracking = new ApplicationInsightsTracking();
         }
 
         //GET: api/books
-        [HttpGet]
-        public async Task<IActionResult> GetAllBooks()
+        [HttpGet("{libraryId}")]
+        public async Task<IActionResult> GetAllBooks([FromRoute] string libraryId)
         {
             try
             {
-                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName("");
+                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName("",int.Parse(libraryId));
                 if (books != null)
                 {
                     return Ok(books);
@@ -62,12 +61,12 @@ namespace LMS.APILayer.Controllers
         }
 
         //GET: api/books/name/harry
-        [HttpGet("name/{search}")]
-        public async Task<IActionResult> GetBookByName([FromRoute] string search)
+        [HttpGet("name/{search}/{libraryId}")]
+        public async Task<IActionResult> GetBookByName([FromRoute] string search,[FromRoute] string libraryId)
         {
             try
             {
-                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName(search);
+                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName(search,int.Parse(libraryId));
                 if (books != null)
                 {
                     return Ok(books);

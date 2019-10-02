@@ -36,6 +36,7 @@ namespace LMS.MVC.Controllers
             {
                 IEnumerable<BookDTO> books;
                 string searchTerm = HttpContext.Session.GetString("Search");
+
                 if (searchTerm != null)
                     books = await bookRepository.GetBooks(searchTerm);
                 else
