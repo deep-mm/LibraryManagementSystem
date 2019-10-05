@@ -107,5 +107,18 @@ namespace LMS.UnitTest
             Assert.IsNotNull(result);
             Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
         }
+
+        [TestMethod]
+        public async Task AddBookSuccessFlow()
+        {
+            //booksBusinessLogic.Setup(x => x.AddNewBook(It.IsAny<BookDTO>(), It.IsAny<int>())).Returns(ExecuteBooksTaskFailure());
+
+            IActionResult result = await booksController.GetBookByName(It.IsAny<string>(), $"{It.IsAny<int>()}");
+
+            var badRequest = result as BadRequestObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+        }
     }
 }

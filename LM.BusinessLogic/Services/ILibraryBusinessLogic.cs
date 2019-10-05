@@ -15,5 +15,6 @@ namespace LMS.BusinessLogic.Services
         Task<bool> ReturnBook(int bookId, int userId);
         Task<IEnumerable<PostDTO>> GetAllPosts();
         Task<bool> AddNewPost(PostDTO post);
+        Task<IEnumerable<PostDTO>> SearchPost(string searchTerm);
     }
 }

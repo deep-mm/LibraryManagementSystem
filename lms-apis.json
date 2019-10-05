@@ -1,0 +1,623 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v2",
+    "title": "LMSApiServices"
+  },
+  "paths": {
+    "/api/books/{libraryId}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "GetAllBooks",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "libraryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/name/{search}/{libraryId}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "GetBookByName",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "libraryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/id/{id}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "GetBookById",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/addBook/{libraryId}": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "AddNewBook",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "book",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/BookDTO"
+            }
+          },
+          {
+            "name": "libraryId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/updateBook": {
+      "put": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "PutBook",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "book",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/BookDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "DeleteBook",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/books/uploadBookImage": {
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "UploadPhotoAsync",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "bookImageDTO",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/BookImageDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/availaibleBooks/{bookName}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "GetAllAvailaibleBooksByName",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "bookName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/availaibleBooks": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "GetAllAvailaibleBooks",
+        "consumes": [],
+        "produces": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/checkout/{bookId}/{userId}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "CheckoutBook",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/return/{bookId}/{userId}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "ReturnBook",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/allLocations": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "GetAllLocations",
+        "consumes": [],
+        "produces": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/getLibrariesByLocation/{locationId}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "GetLibrariesByLocation",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/getPosts": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "GetAllPosts",
+        "consumes": [],
+        "produces": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/addPost": {
+      "post": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "AddNewPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "postDTO",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PostDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/library/searchPosts/{searchTerm}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "operationId": "SearchPosts",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/users/id/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetUserById",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/users/name/{username}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetUserByName",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/users/history/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetBookOrders",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/users/addUser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "AddNewUser",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BookDTO": {
+      "type": "object",
+      "properties": {
+        "bookId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "price": {
+          "format": "double",
+          "type": "number"
+        },
+        "genre": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "type": "integer"
+        },
+        "imageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "BookImageDTO": {
+      "type": "object",
+      "properties": {
+        "bookDTO": {
+          "$ref": "#/definitions/BookDTO"
+        },
+        "bookImage": {
+          "format": "byte",
+          "type": "string"
+        },
+        "fileType": {
+          "type": "string"
+        }
+      }
+    },
+    "PostDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "UserDTO": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "roleId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "locationId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "name": "Authorization",
+      "in": "header",
+      "type": "apiKey",
+      "description": "Jwt Authorisation Header {token}"
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

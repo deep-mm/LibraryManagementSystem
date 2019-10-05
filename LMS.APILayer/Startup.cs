@@ -75,7 +75,7 @@ namespace LMS.APILayer
                    {
                        Description = "Jwt Authorisation Header {token}",
                        Name = "Authorization",
-                       In = "Header",
+                       In = "header",
                        Type = "apiKey"
                    });
                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
@@ -106,6 +106,7 @@ namespace LMS.APILayer
             services.AddScoped<ILibraryBusinessLogic, LibraryBusinessLogic>();
             services.AddScoped<IUserBusinessLogic, UserBusinessLogic>();
             services.AddScoped<IDiscussionRepository, DiscussionRepository>();
+            services.AddScoped<IAzureSearchService, AzureSearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

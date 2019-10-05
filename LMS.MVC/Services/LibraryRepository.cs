@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using LMS.MVC.Helper;
 using LMS.SharedFiles.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -18,11 +19,13 @@ namespace LMS.MVC.Services
         private readonly Helper.Helper helper;
         private bool tokenSet = false;
         private HttpResponseMessage response;
+        private IHttpContextAccessor httpContextAccessor;
         private string className = "LibraryRepository";
 
-        public LibraryRepository(HttpClient httpClient, IConfiguration configuration)
+        public LibraryRepository(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.httpContextAccessor = httpContextAccessor;
             this.helper = new Helper.Helper(configuration);
             this.httpClient.BaseAddress = new Uri(configuration["Api:BaseUrl"]);
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -159,21 +162,31 @@ namespace LMS.MVC.Services
         public async Task<IEnumerable<PostDTO>> GetPosts()
         {
             await setToken();
-            var response = await httpClient.GetAsync($"api/library/getPosts");
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(className + $"/GetPosts(): {response.StatusCode}");
-            }
 
-            var stringData = await response.Content.ReadAsStringAsync();
-            try
+            string searchTerm = httpContextAccessor.HttpContext.Session.GetString("SearchPost");
+            if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                IEnumerable<PostDTO> data = JsonConvert.DeserializeObject<IEnumerable<PostDTO>>(stringData);
-                return data;
+                var response = await httpClient.GetAsync($"api/library/getPosts");
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(className + $"/GetPosts(): {response.StatusCode}");
+                }
+
+                var stringData = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    IEnumerable<PostDTO> data = JsonConvert.DeserializeObject<IEnumerable<PostDTO>>(stringData);
+                    return data;
+                }
+                catch (JsonSerializationException exception)
+                {
+                    throw new JsonSerializationException(className + "/GetPosts(): Error occured in Json Deserialization", exception);
+                }
             }
-            catch (JsonSerializationException exception)
+            else
             {
-                throw new JsonSerializationException(className + "/GetPosts(): Error occured in Json Deserialization", exception);
+                IEnumerable<PostDTO> posts = await SearchPosts(searchTerm);
+                return posts;
             }
         }
 
@@ -193,6 +206,34 @@ namespace LMS.MVC.Services
                     throw new Exception(className + $"/AddPost(): {response.StatusCode}");
                 }
                 return true;
+            }
+        }
+
+        public async Task<IEnumerable<PostDTO>> SearchPosts(string searchTerm)
+        {
+            if (searchTerm != null)
+            {
+                await setToken();
+                var response = await httpClient.GetAsync($"api/library/searchPosts/{searchTerm}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(className + $"/SearchPosts(): {response.StatusCode}");
+                }
+
+                var stringData = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    IEnumerable<PostDTO> data = JsonConvert.DeserializeObject<IEnumerable<PostDTO>>(stringData);
+                    return data;
+                }
+                catch (JsonSerializationException exception)
+                {
+                    throw new JsonSerializationException(className + "/SearchPosts(): Error occured in Json Deserialization", exception);
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(className + "/SearchPosts(): The searchterm parameter receieved is null");
             }
         }
     }

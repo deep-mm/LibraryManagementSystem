@@ -38,7 +38,7 @@ namespace LMS.APILayer.Controllers
         [Authorize]
         // GET: api/library/availaibleBooks/Harry
         [HttpGet("availaibleBooks/{bookName}")]
-        public async Task<IActionResult> GetAllAvailaibleBooks([FromRoute] string bookName)
+        public async Task<IActionResult> GetAllAvailaibleBooksByName([FromRoute] string bookName)
         {
             try
             {
@@ -211,6 +211,31 @@ namespace LMS.APILayer.Controllers
             {
                 applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while adding post to the database");
+            }
+        }
+
+        [HttpGet("searchPosts/{searchTerm}")]
+        public async Task<IActionResult> SearchPosts(string searchTerm)
+        {
+            try
+            {
+                if (searchTerm != null)
+                {
+                    IEnumerable<PostDTO> postDTOs = await libraryBusinessLogic.SearchPost(searchTerm);
+                    if (postDTOs != null)
+                        return Ok(postDTOs);
+                    else
+                        throw new Exception(className + "/GetAllPosts(): postDTOs array returned as null from the DataAccessLayer");
+                }
+                else
+                {
+                    throw new ArgumentNullException(className + "/GetAllPosts(): searchTerm paramter received is null");
+                }
+            }
+            catch (Exception e)
+            {
+                applicationInsightsTracking.TrackException(e);
+                return BadRequest("Error occured while getting all posts from the database");
             }
         }
     }

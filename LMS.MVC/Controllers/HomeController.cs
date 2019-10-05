@@ -196,6 +196,17 @@ namespace LMS.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public IActionResult SearchPost(string searchTerm)
+        {
+            if (!string.IsNullOrEmpty(searchTerm))
+                HttpContext.Session.SetString("SearchPost", searchTerm);
+            else
+                HttpContext.Session.SetString("SearchPost", "");
+
+            return RedirectToAction("ViewPosts", "Home");
+        }
+
         [HttpGet]
         public async Task<IActionResult> ViewPosts()
         {
@@ -238,7 +249,19 @@ namespace LMS.MVC.Controllers
                     post.postId = $"{DateTime.UtcNow}";
                     post.text = postDTO.text;
                     post.type = "Post";
-                    post.username = HttpContext.Session.GetString("userEmail");
+                    string email = HttpContext.Session.GetString("userEmail");
+                    if (string.IsNullOrEmpty(email))
+                    {
+                        post.username = email;
+                    }
+                    else
+                    {
+                        email = User.Identity.Name;
+                        string[] emailObjects = email.Split('#');
+                        email = emailObjects[emailObjects.Length - 1];
+                        HttpContext.Session.SetString("userEmail", email);
+                        post.username = email;
+                    }
                     if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Student"))
                         post.role = "Student";
                     else

@@ -12,11 +12,13 @@ namespace LMS.BusinessLogic.Services
     {
         private readonly ILibraryRepository libraryRepository;
         private readonly IDiscussionRepository discussionRepository;
+        private readonly IAzureSearchService azureSearchService;
 
-        public LibraryBusinessLogic(ILibraryRepository libraryRepository,IDiscussionRepository discussionRepository)
+        public LibraryBusinessLogic(ILibraryRepository libraryRepository,IDiscussionRepository discussionRepository, IAzureSearchService azureSearchService)
         {
             this.libraryRepository = libraryRepository;
             this.discussionRepository = discussionRepository;
+            this.azureSearchService = azureSearchService;
         }
 
         // Get all the libraries in the database
@@ -69,6 +71,11 @@ namespace LMS.BusinessLogic.Services
         public async Task<IEnumerable<PostDTO>> GetAllPosts()
         {
             return await discussionRepository.GetAllPosts();
+        }
+
+        public async Task<IEnumerable<PostDTO>> SearchPost(string searchTerm)
+        {
+            return await azureSearchService.Search(searchTerm);
         }
     }
 }

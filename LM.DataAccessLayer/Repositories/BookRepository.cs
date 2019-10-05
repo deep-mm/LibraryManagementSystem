@@ -165,11 +165,9 @@ namespace LMS.DataAccessLayer.Repositories
             if (bookName != null)
             {
                 IEnumerable<Book> books;
-                string cachedBooks;
+                string cachedBooks = null;
                 if (bookName.Equals(""))
                     cachedBooks = await distributedCache.GetStringAsync($"Books_AllBooks_{bookName}_{libraryId}");
-                else
-                    cachedBooks = null;
 
                 if (cachedBooks == null)
                 {
