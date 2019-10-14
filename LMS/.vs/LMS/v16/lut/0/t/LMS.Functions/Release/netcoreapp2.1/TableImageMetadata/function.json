@@ -1,0 +1,15 @@
+{
+  "generatedBy": "Microsoft.NET.Sdk.Functions-1.0.29",
+  "configurationSource": "attributes",
+  "bindings": [
+    {
+      "type": "blobTrigger",
+      "connection": "AzureWebJobsStorage",
+      "path": "bookimagecontainer/{genre}/{fileName}",
+      "name": "myBlob"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../bin/LMS.Functions.dll",
+  "entryPoint": "LMS.Functions.TableImageMetadata.Run"
+}

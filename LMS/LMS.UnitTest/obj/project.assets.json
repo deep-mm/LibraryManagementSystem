@@ -5295,7 +5295,6 @@
           "Microsoft.Extensions.Caching.Redis": "2.1.1",
           "Microsoft.Extensions.Configuration": "2.1.1",
           "Microsoft.Extensions.Configuration.AzureKeyVault": "2.1.1",
-          "Microsoft.NETCore.App": "2.1.0",
           "StackExchange.Redis": "2.0.601",
           "SwashBuckle.AspNetCore.MicrosoftExtensions": "0.5.0",
           "Swashbuckle.AspNetCore": "4.0.1"
@@ -5366,7 +5365,6 @@
           "Microsoft.AspNetCore.Authentication.AzureAD.UI": "2.1.1",
           "Microsoft.Extensions.Configuration.AzureKeyVault": "2.1.1",
           "Microsoft.IdentityModel.Clients.ActiveDirectory": "5.2.1",
-          "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.9"
         },
         "compile": {
@@ -14903,6 +14901,7 @@
   },
   "packageFolders": {
     "C:\\Users\\demeht\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -14915,11 +14914,13 @@
       "outputPath": "C:\\Users\\demeht\\Documents\\TONE\\LMS - Final\\LMS\\LMS.UnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\demeht\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
@@ -14975,6 +14976,7 @@
             "version": "[16.3.0, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
@@ -14989,10 +14991,16 @@
           }
         },
         "imports": [
-          "net461"
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
         ],
         "assetTargetFallback": true,
-        "warn": true
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -15001,7 +15009,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'EntityFrameworkTesting.Moq 1.2.3' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "message": "Package 'EntityFrameworkTesting.Moq 1.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
       "libraryId": "EntityFrameworkTesting.Moq",
       "targetGraphs": [
         ".NETCoreApp,Version=v2.1"

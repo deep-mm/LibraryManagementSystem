@@ -1,0 +1,7 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=lmstone;AccountKey=54TPoXv2wFgzWnBQfT5/E2L/CLfbAHdk8sBzh86slPw14XjoJAKBFT7dfQQKNxZFxUIETYsD6F+vFcKMnqFKiQ==;BlobEndpoint=https://lmstone.blob.core.windows.net/;TableEndpoint=https://lmstone.table.core.windows.net/;QueueEndpoint=https://lmstone.queue.core.windows.net/;FileEndpoint=https://lmstone.file.core.windows.net/",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+  }
+}
