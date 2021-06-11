@@ -1,6 +1,9 @@
 # LibraryManagementSystem
 This is a library management system project which demonstrates how various Azure Cloud Services can be integrated into a .NET Core application.
 
+API: [https://librarysystem-api.azurewebsites.net/swagger](https://librarysystem-api.azurewebsites.net/swagger)
+Website: [https://librarysystem-mvc.azurewebsites.net](https://librarysystem-mvc.azurewebsites.net)
+
 This project contains 2 major sections we built using ASP.NET C#:
 1. Backend-APIs
 2. Frontend Website
