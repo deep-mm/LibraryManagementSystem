@@ -4,11 +4,9 @@
  */
 namespace LMS.DataAccessLayer.Repositories
 {
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using LMS.DataAccessLayer.Entities;
-    using System.Collections;
     using LMS.SharedFiles.DTOs;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface ILibraryRepository
     {

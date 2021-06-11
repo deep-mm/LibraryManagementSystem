@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LMS.DataAccessLayer.DatabaseContext;
 using LMS.SharedFiles.DTOs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System;
+using System.Threading.Tasks;
 
 namespace LMS.DataAccessLayer.Repositories
 {
@@ -57,7 +55,7 @@ namespace LMS.DataAccessLayer.Repositories
                 {
                     throw new ArgumentNullException(className + "/UploadImage(): The bookImageDTO object parameter is null");
                 }
-                else if(blobName == null)
+                else if (blobName == null)
                 {
                     throw new ArgumentNullException(className + "/UploadImage(): The blobName string parameter is null");
                 }
@@ -74,9 +72,9 @@ namespace LMS.DataAccessLayer.Repositories
                 string uri = cloudBlockBlob.Uri.ToString();
                 return uri;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new Exception("Error occured while uploading image to the blob , exception = "+e.ToString());
+                throw new Exception("Error occured while uploading image to the blob , exception = " + e.ToString());
             }
         }
     }

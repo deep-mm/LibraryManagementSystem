@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.SharedFiles.DTOs
+﻿namespace LMS.SharedFiles.DTOs
 {
     public class PostDTO
     {

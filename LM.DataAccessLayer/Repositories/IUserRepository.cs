@@ -4,9 +4,7 @@
  */
 namespace LMS.DataAccessLayer.Repositories
 {
-    using LMS.DataAccessLayer.Entities;
     using LMS.SharedFiles.DTOs;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     public interface IUserRepository

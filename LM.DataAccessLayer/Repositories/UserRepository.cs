@@ -4,16 +4,16 @@
  */
 namespace LMS.DataAccessLayer.Repositories
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using AutoMapper;
     using LMS.DataAccessLayer.DatabaseContext;
     using LMS.DataAccessLayer.Entities;
     using LMS.SharedFiles.DTOs;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private ReadDBContext readDBContext;
         private IMapper mapper;
@@ -36,7 +36,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(className+ "/Commit(): Error occured while commiting to database");
+                throw new Exception(className + "/Commit(): Error occured while commiting to database");
             }
         }
 
@@ -54,12 +54,12 @@ namespace LMS.DataAccessLayer.Repositories
                 }
                 else
                 {
-                    throw new NullReferenceException(className+ $"/GetUserById(): The user for id: {userId} was not found");
+                    throw new NullReferenceException(className + $"/GetUserById(): The user for id: {userId} was not found");
                 }
             }
             else
             {
-                throw new ArgumentNullException(className+ "/GetUserById(): The userId parameter received is null");
+                throw new ArgumentNullException(className + "/GetUserById(): The userId parameter received is null");
             }
         }
 
@@ -77,7 +77,7 @@ namespace LMS.DataAccessLayer.Repositories
                 }
                 else
                 {
-                    throw new NullReferenceException(className+ $"/GetUserByName(): The user for name {username} was not found");
+                    throw new NullReferenceException(className + $"/GetUserByName(): The user for name {username} was not found");
                 }
             }
             else
@@ -99,7 +99,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             else
             {
-                throw new ArgumentNullException(className+ "/AddNewUser(): The userDTO object parameter received is null");
+                throw new ArgumentNullException(className + "/AddNewUser(): The userDTO object parameter received is null");
             }
         }
 
@@ -135,7 +135,7 @@ namespace LMS.DataAccessLayer.Repositories
                             }
                             else
                             {
-                                throw new NullReferenceException(className+ $"/UserOrderHistory(): The book for id: {bla.bookId} was not found");
+                                throw new NullReferenceException(className + $"/UserOrderHistory(): The book for id: {bla.bookId} was not found");
                             }
                         }
                         else

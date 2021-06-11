@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoMapper;
-using LMS.APILayer.Services;
+﻿using LMS.APILayer.Services;
 using LMS.BusinessLogic.Services;
-using LMS.DataAccessLayer.DatabaseContext;
-using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace LMS.APILayer.Controllers
 {
@@ -39,7 +33,7 @@ namespace LMS.APILayer.Controllers
             try
             {
                 UserDTO user = await userBusinessLogic.GetUserById(userId);
-                if(user!=null)
+                if (user != null)
                     return Ok(user);
                 else
                     throw new Exception(className + "/GetUserById(): user object returned as null from DataAccessLayer");

@@ -1,20 +1,16 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using LMS.Functions.Entities;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.Table;
+using System;
+using System.Threading.Tasks;
 
 namespace LMS.Functions
 {
     public static class TableImageMetadata
     {
         [FunctionName("TableImageMetadata")]
-        public static async Task Run([BlobTrigger("bookimagecontainer/{genre}/{fileName}", Connection = "AzureWebJobsStorage")]CloudBlockBlob myBlob,
+        public static async Task Run([BlobTrigger("bookimagecontainer/{genre}/{fileName}", Connection = "AzureWebJobsStorage")] CloudBlockBlob myBlob,
             [Table("Books", Connection = "AzureWebJobsStorage")] IAsyncCollector<Book> bookTable,
             string fileName, ILogger log)
         {

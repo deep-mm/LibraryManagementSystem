@@ -1,20 +1,12 @@
-﻿using AutoMapper;
-using LMS.APILayer.Controllers;
+﻿using LMS.APILayer.Controllers;
 using LMS.BusinessLogic.Services;
-using LMS.DataAccessLayer.DatabaseContext;
-using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 
@@ -47,7 +39,7 @@ namespace LMS.UnitTest
         [TestMethod]
         public async Task GetAllBooksSuccessFlow()
         {
-            booksBusinessLogic.Setup(x => x.GetBookByName(It.IsAny<string>(),It.IsAny<int>())).Returns(ExecuteBooksTaskSuccess());
+            booksBusinessLogic.Setup(x => x.GetBookByName(It.IsAny<string>(), It.IsAny<int>())).Returns(ExecuteBooksTaskSuccess());
 
             var result = await booksController.GetAllBooks($"{It.IsAny<int>()}");
 
@@ -60,14 +52,14 @@ namespace LMS.UnitTest
 
         private async Task<IEnumerable<BookDTO>> ExecuteBooksTaskSuccess()
         {
-            return await Task.FromResult(new List<BookDTO>() { new BookDTO(), new BookDTO()});
+            return await Task.FromResult(new List<BookDTO>() { new BookDTO(), new BookDTO() });
         }
 
         [TestMethod]
         public async Task GetAllBooksFailureFlow()
         {
             booksBusinessLogic.Setup(x => x.GetBookByName(It.IsAny<string>(), It.IsAny<int>())).Returns(ExecuteBooksTaskFailure());
-         
+
             IActionResult result = await booksController.GetAllBooks($"{It.IsAny<int>()}");
 
             var badResult = result as BadRequestObjectResult;

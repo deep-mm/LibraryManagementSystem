@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using LMS.APILayer.Services;
+using LMS.BusinessLogic.Services;
+using LMS.SharedFiles.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoMapper;
-using LMS.APILayer.Services;
-using LMS.BusinessLogic.Services;
-using LMS.DataAccessLayer.DatabaseContext;
-using LMS.DataAccessLayer.Repositories;
-using LMS.SharedFiles.DTOs;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Configuration;
 
 namespace LMS.APILayer.Controllers
 {
@@ -43,7 +35,7 @@ namespace LMS.APILayer.Controllers
         {
             try
             {
-                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName("",int.Parse(libraryId));
+                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName("", int.Parse(libraryId));
                 if (books != null)
                 {
                     return Ok(books);
@@ -53,7 +45,7 @@ namespace LMS.APILayer.Controllers
                     throw new Exception(className + "/GetAllBooks(): Books list returned as null from DataAccessLayer");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while retreiving books from database");
@@ -62,11 +54,11 @@ namespace LMS.APILayer.Controllers
 
         //GET: api/books/name/harry
         [HttpGet("name/{search}/{libraryId}")]
-        public async Task<IActionResult> GetBookByName([FromRoute] string search,[FromRoute] string libraryId)
+        public async Task<IActionResult> GetBookByName([FromRoute] string search, [FromRoute] string libraryId)
         {
             try
             {
-                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName(search,int.Parse(libraryId));
+                IEnumerable<BookDTO> books = await booksBusinessLogic.GetBookByName(search, int.Parse(libraryId));
                 if (books != null)
                 {
                     return Ok(books);
@@ -190,8 +182,8 @@ namespace LMS.APILayer.Controllers
                     return BadRequest(ModelState);
                 }
                 string uri = await booksBusinessLogic.UploadImage(bookImageDTO, "bookimagecontainer");
-                
-                if (uri!=null)
+
+                if (uri != null)
                     return Ok(uri);
                 else
                     throw new Exception(className + "/UploadPhotoAsync(): uri returned as null from DataAccessLayer");
@@ -201,7 +193,7 @@ namespace LMS.APILayer.Controllers
                 applicationInsightsTracking.TrackException(e);
                 return BadRequest("Error occured while uploading image");
             }
-            
+
         }
 
     }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace LMS.APILayer
 {
@@ -28,6 +22,6 @@ namespace LMS.APILayer
             })
             .UseApplicationInsights()
                 .UseStartup<Startup>();
-                
+
     }
 }

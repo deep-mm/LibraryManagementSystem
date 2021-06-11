@@ -3,9 +3,7 @@ namespace LMS.BusinessLogic.Services
 {
     using LMS.DataAccessLayer.Repositories;
     using LMS.SharedFiles.DTOs;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class BooksBusinessLogic : IBooksBusinessLogic

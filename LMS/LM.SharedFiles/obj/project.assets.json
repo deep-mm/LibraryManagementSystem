@@ -5629,11 +5629,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\demeht\\Documents\\TONE\\LMS - Final\\LMS\\LM.SharedFiles\\LMS.SharedFiles.csproj",
+      "projectUniqueName": "C:\\Personal\\LibraryManagementSystem\\LMS\\LM.SharedFiles\\LMS.SharedFiles.csproj",
       "projectName": "LMS.SharedFiles",
-      "projectPath": "C:\\Users\\demeht\\Documents\\TONE\\LMS - Final\\LMS\\LM.SharedFiles\\LMS.SharedFiles.csproj",
+      "projectPath": "C:\\Personal\\LibraryManagementSystem\\LMS\\LM.SharedFiles\\LMS.SharedFiles.csproj",
       "packagesPath": "C:\\Users\\demeht\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\demeht\\Documents\\TONE\\LMS - Final\\LMS\\LM.SharedFiles\\obj\\",
+      "outputPath": "C:\\Personal\\LibraryManagementSystem\\LMS\\LM.SharedFiles\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -5653,6 +5653,7 @@
       },
       "frameworks": {
         "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
           "projectReferences": {}
         }
       },
@@ -5664,6 +5665,7 @@
     },
     "frameworks": {
       "netstandard2.0": {
+        "targetAlias": "netstandard2.0",
         "dependencies": {
           "Microsoft.ApplicationInsights": {
             "target": "Package",
@@ -5694,7 +5696,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.410\\RuntimeIdentifierGraph.json"
       }
     }
   }

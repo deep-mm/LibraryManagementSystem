@@ -1,9 +1,4 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.Functions.Entities
+﻿namespace LMS.Functions.Entities
 {
     public class Book
     {

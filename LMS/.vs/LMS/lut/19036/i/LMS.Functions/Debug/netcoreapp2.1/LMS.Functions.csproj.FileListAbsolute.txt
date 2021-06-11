@@ -1,9 +1,0 @@
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.Functions\Debug\netcoreapp2.1\host.json
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.Functions\Debug\netcoreapp2.1\local.settings.json
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.deps.json
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\b\LMS.Functions\Debug\netcoreapp2.1\bin\LMS.Functions.dll
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.csproj.CoreCompileInputs.cache
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.AssemblyInfoInputs.cache
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.AssemblyInfo.cs
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.csproj.CopyComplete
-C:\Users\demeht\Documents\TONE\LMS - Final\LMS\.vs\LMS\lut\0\i\LMS.Functions\Debug\netcoreapp2.1\LMS.Functions.dll

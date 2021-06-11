@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LMS.SharedFiles.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using LMS.DataAccessLayer.Entities;
-using LMS.SharedFiles.DTOs;
 
 namespace LMS.DataAccessLayer.Repositories
 {

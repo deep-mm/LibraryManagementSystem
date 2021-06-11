@@ -6,9 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LMS.DataAccessLayer.Repositories
@@ -71,14 +69,14 @@ namespace LMS.DataAccessLayer.Repositories
 
                 DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
                 options.SetAbsoluteExpiration(new TimeSpan(24, 0, 0));
-                
+
                 await distributedCache.SetStringAsync("Post_GetAll", JsonConvert.SerializeObject(postDTOs));
             }
             else
             {
                 postDTOs = JsonConvert.DeserializeObject<IEnumerable<PostDTO>>(cachedData);
             }
-            
+
             return postDTOs;
         }
 

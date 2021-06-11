@@ -1,17 +1,12 @@
-﻿using AutoMapper;
-using LMS.APILayer.Services;
+﻿using LMS.APILayer.Services;
 using LMS.BusinessLogic.Services;
-using LMS.DataAccessLayer.DatabaseContext;
 using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -43,7 +38,7 @@ namespace LMS.APILayer.Controllers
             try
             {
                 IEnumerable<BookDTO> availaibleBooks;
-                if (bookName==null)
+                if (bookName == null)
                     availaibleBooks = await libraryBusinessLogic.GetAllAvailaibleBooks(null);
                 else
                     availaibleBooks = await libraryBusinessLogic.GetAllAvailaibleBooks(bookName);

@@ -4,21 +4,16 @@
  */
 namespace LMS.DataAccessLayer.Repositories
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using AutoMapper;
     using LMS.DataAccessLayer.DatabaseContext;
     using LMS.DataAccessLayer.Entities;
     using LMS.SharedFiles.DTOs;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Distributed;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class BookRepository : IBookRepository
     {
@@ -182,7 +177,7 @@ namespace LMS.DataAccessLayer.Repositories
                     DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
                     options.SetAbsoluteExpiration(new System.TimeSpan(24, 0, 0));
 
-                    if(bookName.Equals(""))
+                    if (bookName.Equals(""))
                         await distributedCache.SetStringAsync($"Books_AllBooks_{bookName}_{libraryId}", JsonConvert.SerializeObject(books));
                 }
                 else
@@ -238,7 +233,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(className + "/Commit(): Error occured while commiting to database + Exception: "+e.ToString());
+                throw new Exception(className + "/Commit(): Error occured while commiting to database + Exception: " + e.ToString());
             }
         }
 
@@ -247,5 +242,5 @@ namespace LMS.DataAccessLayer.Repositories
             await distributedCache.RemoveAsync(key);
         }
     }
-       
+
 }

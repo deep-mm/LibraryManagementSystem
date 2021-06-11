@@ -1,31 +1,21 @@
 ﻿
 namespace LMS.APILayer
 {
-    using System.Linq;
-    using System.Threading.Tasks;
+    using AutoMapper;
+    using LMS.BusinessLogic.Services;
+    using LMS.DataAccessLayer.DatabaseContext;
+    using LMS.DataAccessLayer.Profiles;
+    using LMS.DataAccessLayer.Repositories;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.HttpsPolicy;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Newtonsoft.Json.Serialization;
-    using System;
-    using System.Collections.Generic;
-    using LMS.DataAccessLayer.Repositories;
-    using LMS.DataAccessLayer.DatabaseContext;
-    using Microsoft.EntityFrameworkCore;
-    using AutoMapper;
-    using LMS.DataAccessLayer.Profiles;
     using Swashbuckle.AspNetCore.Swagger;
-    using System.Collections;
-    using LMS.SharedFiles;
-    using LMS.BusinessLogic.Services;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -125,14 +115,14 @@ namespace LMS.APILayer
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
-            
+
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v2/swagger.json", "LMSApiServices");
 
-            });
+                });
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LMS.SharedFiles.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using LMS.SharedFiles.DTOs;
 
 namespace LMS.BusinessLogic.Services
 {

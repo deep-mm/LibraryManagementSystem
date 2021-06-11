@@ -4,20 +4,16 @@
  */
 namespace LMS.DataAccessLayer.Repositories
 {
-    using LMS.DataAccessLayer.Entities;
-    using System.Collections.Generic;
-    using System.Linq;
-    using LMS.DataAccessLayer.Repositories;
-    using LMS.SharedFiles.DTOs;
-    using System.Threading.Tasks;
-    using System;
-    using System.Collections;
     using AutoMapper;
     using LMS.DataAccessLayer.DatabaseContext;
-    using Microsoft.EntityFrameworkCore;
-    using LMS.DataAccessLayer.Profiles;
+    using LMS.DataAccessLayer.Entities;
+    using LMS.SharedFiles.DTOs;
     using Microsoft.Extensions.Caching.Distributed;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class LibraryRepository : ILibraryRepository
     {
@@ -91,7 +87,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             else
             {
-                throw new NullReferenceException(className+ "/GetAllAvailaibleBooks(): The books array returned from database is null");
+                throw new NullReferenceException(className + "/GetAllAvailaibleBooks(): The books array returned from database is null");
             }
         }
 
@@ -123,7 +119,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             else
             {
-                throw new NullReferenceException(className+ "/GetAllLibraries() The library array returned from database is null");
+                throw new NullReferenceException(className + "/GetAllLibraries() The library array returned from database is null");
             }
         }
 
@@ -156,7 +152,7 @@ namespace LMS.DataAccessLayer.Repositories
             }
             else
             {
-                throw new NullReferenceException(className+ $"/GetLibrariesByLocation(): The library array returned from database for locationId: {locationId} was not found");
+                throw new NullReferenceException(className + $"/GetLibrariesByLocation(): The library array returned from database for locationId: {locationId} was not found");
             }
 
         }
@@ -275,11 +271,11 @@ namespace LMS.DataAccessLayer.Repositories
                 foreach (var location in locationDTOs)
                 {
                     IEnumerable<LibraryDTO> libraries = await GetLibrariesByLocation(location.locationId);
-                    if (libraries != null && libraries.Count()>0)
+                    if (libraries != null && libraries.Count() > 0)
                     {
                         location.libraryId = libraries.ToList()[0].libraryId;
                     }
-                    else if(libraries == null)
+                    else if (libraries == null)
                     {
                         throw new NullReferenceException(className + "/GetAllLocations(): libraries array returned as null from the dataAcessLayer");
                     }

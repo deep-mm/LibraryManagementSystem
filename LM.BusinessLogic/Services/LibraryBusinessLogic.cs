@@ -1,9 +1,6 @@
 ﻿using LMS.DataAccessLayer.Repositories;
 using LMS.SharedFiles.DTOs;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LMS.BusinessLogic.Services
@@ -14,7 +11,7 @@ namespace LMS.BusinessLogic.Services
         private readonly IDiscussionRepository discussionRepository;
         private readonly IAzureSearchService azureSearchService;
 
-        public LibraryBusinessLogic(ILibraryRepository libraryRepository,IDiscussionRepository discussionRepository, IAzureSearchService azureSearchService)
+        public LibraryBusinessLogic(ILibraryRepository libraryRepository, IDiscussionRepository discussionRepository, IAzureSearchService azureSearchService)
         {
             this.libraryRepository = libraryRepository;
             this.discussionRepository = discussionRepository;

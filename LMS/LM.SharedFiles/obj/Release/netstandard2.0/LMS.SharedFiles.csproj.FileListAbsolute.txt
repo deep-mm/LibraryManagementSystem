@@ -12,3 +12,17 @@ C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netsta
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.pdb
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
 C:\Users\demeht\Documents\TONE\LMS - Final\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.xml
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.deps.json
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.dll
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\LMS.SharedFiles.pdb
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Http.Features.xml
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\bin\Release\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.xml
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfoInputs.cache
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.AssemblyInfo.cs
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csproj.CoreCompileInputs.cache
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csproj.CopyComplete
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.dll
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.pdb
+C:\Personal\LibraryManagementSystem\LMS\LM.SharedFiles\obj\Release\netstandard2.0\LMS.SharedFiles.csprojAssemblyReference.cache

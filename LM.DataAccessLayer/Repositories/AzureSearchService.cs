@@ -3,10 +3,7 @@ using LMS.SharedFiles.DTOs;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LMS.DataAccessLayer.Repositories
@@ -18,8 +15,8 @@ namespace LMS.DataAccessLayer.Repositories
 
         public AzureSearchService(IConfiguration configuration)
         {
-            searchServiceClient = new SearchServiceClient("lms-tone", new SearchCredentials(configuration["AzureSearchPrimaryKey"]));
-            searchIndexClient = new SearchIndexClient("lms-tone", "cosmosdb-index", new SearchCredentials(configuration["AzureSearchPrimaryKey"]));
+            searchServiceClient = new SearchServiceClient("lmssearchservice", new SearchCredentials(configuration["AzureSearchPrimaryKey"]));
+            searchIndexClient = new SearchIndexClient("lmssearchservice", "cosmosdb-index", new SearchCredentials(configuration["AzureSearchPrimaryKey"]));
         }
 
         public async Task<IEnumerable<PostDTO>> Search(string searchValue)
