@@ -22,3 +22,6 @@ Various Azure Services are integrated with this application:
 8. Azure Cosmos DB
 9. Azure Storage Account
 10. Azure Active Directory
+
+![image](https://user-images.githubusercontent.com/29853549/121651866-b5556d80-cab8-11eb-9fe5-6224e5eda647.png)
+
