@@ -3,3 +3,12 @@
 ################################################################################
 
 /.vs
+/LM.BusinessLogic/bin
+/LM.BusinessLogic/obj
+/LM.DataAccessLayer/bin
+/LM.DataAccessLayer/obj
+/LMS/.vs/LMS/v16
+/LMS.APILayer/bin
+/LMS.APILayer/obj
+/LMS.MVC/bin/Release/netcoreapp2.1
+/LMS.MVC/obj
