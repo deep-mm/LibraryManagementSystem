@@ -12,3 +12,6 @@
 /LMS.APILayer/obj
 /LMS.MVC/bin/Release/netcoreapp2.1
 /LMS.MVC/obj
+/LMS/LM.SharedFiles/obj
+/LMS/LMS.UnitTest/obj
+/LMS/.vs/LMS/DesignTimeBuild
